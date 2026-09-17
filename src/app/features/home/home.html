@@ -1,8 +1,26 @@
 <div
   class="bg-bg-base text-text-primary font-display leading-relaxed overflow-x-hidden antialiased"
 >
+
+  <div id="backdrop" class="fixed inset-0 -z-10 overflow-hidden bg-bg-base">
+    <div id="backdrop-mesh" class="absolute -inset-[10%] blur-[100px]">
+      <span class="absolute rounded-full opacity-[0.35] dark:opacity-[0.35] w-[42vw] h-[42vw] -top-[12%] -left-[6%] bg-accent-1 animate-drift1"></span>
+      <span class="absolute rounded-full opacity-[0.35] w-[36vw] h-[36vw] top-[32%] -right-[10%] bg-accent-2 animate-drift2"></span>
+      <span class="absolute rounded-full opacity-[0.35] w-[28vw] h-[28vw] -bottom-[14%] left-[22%] bg-[#4A5CD9] animate-drift3"></span>
+    </div>
+    <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27 opacity=%270.4%27/%3E%3C/svg%3E');"></div>
+  </div>
+
   <app-navbar></app-navbar>
   <app-hero></app-hero>
+  <app-skills></app-skills>
+  <app-work></app-work>
+  <app-experience></app-experience>
+  <app-blog></app-blog>
+  <app-testimonials></app-testimonials>
   <app-about></app-about>
+  <app-contact></app-contact>
+
   <app-footer></app-footer>
+  
 </div>
