@@ -125,3 +125,20 @@ html, body {
 .animate-spinslow {
   animation: spinslow 24s linear infinite;
 }
+
+/* was 0.35 */
+#backdrop-mesh span {
+  opacity: 0.15;
+}
+
+.video-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: -15; /* between video (-20) and backdrop (-10) */
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 15, 0.4) 0%,
+    rgba(10, 10, 15, 0.75) 100%
+  );
+  pointer-events: none;
+}

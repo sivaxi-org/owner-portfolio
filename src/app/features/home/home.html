@@ -1,6 +1,18 @@
-<div
-  class="bg-bg-base text-text-primary font-display leading-relaxed overflow-x-hidden antialiased"
->
+
+
+<div class="bg-bg-base text-text-primary font-display leading-relaxed overflow-x-hidden antialiased">
+
+<video
+  scrollScrub
+  mode="static"
+  [cycles]="1"
+  [smoothing]="0.1"
+  src="assets/videos/bg-loop.mp4"
+  muted
+  playsinline
+  preload="auto"
+  class="fixed inset-0 w-full h-full object-cover"
+></video>
 
   <div id="backdrop" class="fixed inset-0 -z-10 overflow-hidden bg-bg-base">
     <div id="backdrop-mesh" class="absolute -inset-[10%] blur-[100px]">
@@ -20,7 +32,6 @@
   <app-testimonials></app-testimonials>
   <app-about></app-about>
   <app-contact></app-contact>
-
   <app-footer></app-footer>
-  
+
 </div>
