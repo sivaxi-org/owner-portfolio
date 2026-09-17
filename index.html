@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alex Rivera — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS (Play CDN) + project theme extension -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'bg-base': 'var(--bg-base)',
+          'bg-elev': 'var(--bg-elev)',
+          'text-primary': 'var(--text-primary)',
+          'text-muted': 'var(--text-muted)',
+          'text-faint': 'var(--text-faint)',
+          'accent-1': 'var(--accent-1)',
+          'accent-2': 'var(--accent-2)',
+          'glass-fill': 'var(--glass-fill)',
+          'glass-fill-strong': 'var(--glass-fill-strong)',
+          'glass-border': 'var(--glass-border)',
+          'glass-border-soft': 'var(--glass-border-soft)',
+          'on-accent': 'var(--on-accent)',
+        },
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        },
+        boxShadow: {
+          glass: 'var(--shadow-glass)',
+        },
+        keyframes: {
+          reveal: { '0%': { opacity: 0, transform: 'translateY(12px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+          drift1: { '0%,100%': { transform: 'translate(0,0) scale(1)' }, '50%': { transform: 'translate(5vw,6vh) scale(1.1)' } },
+          drift2: { '0%,100%': { transform: 'translate(0,0) scale(1)' }, '50%': { transform: 'translate(-6vw,4vh) scale(0.92)' } },
+          drift3: { '0%,100%': { transform: 'translate(0,0) scale(1)' }, '50%': { transform: 'translate(3vw,-5vh) scale(1.08)' } },
+          scan: { '0%,100%': { top: '18%' }, '50%': { top: '78%' } },
+          spinslow: { to: { transform: 'rotate(360deg)' } },
+        },
+        animation: {
+          reveal: 'reveal 0.6s ease forwards',
+          drift1: 'drift1 30s ease-in-out infinite',
+          drift2: 'drift2 36s ease-in-out infinite',
+          drift3: 'drift3 32s ease-in-out infinite',
+          scan: 'scan 5s ease-in-out infinite',
+          spinslow: 'spinslow 24s linear infinite',
+        },
+      },
+    },
+  };
+</script>
+
+<!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  DESIGN TOKENS — everything that Tailwind's utility classes reference below
+  (light/dark color pairs, base typography, reduced-motion + focus resets).
+  This is intentionally the only hand-written CSS in the file; every
+  component underneath is built from Tailwind utility classes.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+<style>
+  :root {
+    --bg-base: #0A0E16;
+    --bg-elev: #10141D;
+    --text-primary: #F2F4F8;
+    --text-muted: #8B93A7;
+    --text-faint: #5B6478;
+    --accent-1: #7C6CF6;
+    --accent-2: #43D9C8;
+    --glass-fill: rgba(255, 255, 255, 0.05);
+    --glass-fill-strong: rgba(255, 255, 255, 0.085);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-border-soft: rgba(255, 255, 255, 0.07);
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+    --on-accent: #0A0E16;
+    color-scheme: dark;
+  }
+
+  :root[data-theme="light"] {
+    --bg-base: #EDEFF4;
+    --bg-elev: #E3E6ED;
+    --text-primary: #12141C;
+    --text-muted: #565D6E;
+    --text-faint: #8B93A7;
+    --accent-1: #5B47E0;
+    --accent-2: #0FA398;
+    --glass-fill: rgba(255, 255, 255, 0.45);
+    --glass-fill-strong: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(20, 22, 30, 0.1);
+    --glass-border-soft: rgba(20, 22, 30, 0.07);
+    --shadow-glass: 0 8px 32px rgba(30, 34, 50, 0.12);
+    --on-accent: #F7F8FB;
+    color-scheme: light;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { transition: background 0.4s ease, color 0.4s ease; }
+  #backdrop, .glass-panel { transition: background 0.4s ease, border-color 0.4s ease; }
+
+  #theme-toggle .icon-sun { display: none; }
+  :root[data-theme="light"] #theme-toggle .icon-moon { display: none; }
+  :root[data-theme="light"] #theme-toggle .icon-sun { display: block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #backdrop-mesh span, .anim-reveal, .badge-svg, .visual-scanline { animation: none !important; opacity: 1 !important; }
+    * { scroll-behavior: auto !important; }
+  }
+
+  :focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+</style>
+</head>
+
+<body class="bg-bg-base text-text-primary font-display leading-relaxed overflow-x-hidden antialiased">
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: AMBIENT BACKDROP                                                    -->
+  <!-- Fixed mesh-gradient + film-grain layer sitting behind every glass panel.        -->
+  <!-- Swap #backdrop-mesh for a muted <video> if you want motion footage instead.     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <div id="backdrop" class="fixed inset-0 -z-10 overflow-hidden bg-bg-base">
+    <div id="backdrop-mesh" class="absolute -inset-[10%] blur-[100px]">
+      <span class="absolute rounded-full opacity-[0.35] dark:opacity-[0.35] w-[42vw] h-[42vw] -top-[12%] -left-[6%] bg-accent-1 animate-drift1"></span>
+      <span class="absolute rounded-full opacity-[0.35] w-[36vw] h-[36vw] top-[32%] -right-[10%] bg-accent-2 animate-drift2"></span>
+      <span class="absolute rounded-full opacity-[0.35] w-[28vw] h-[28vw] -bottom-[14%] left-[22%] bg-[#4A5CD9] animate-drift3"></span>
+    </div>
+    <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27 opacity=%270.4%27/%3E%3C/svg%3E');"></div>
+  </div>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: APP HEADER / NAVIGATION                                              -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: HERO                                                                 -->
+  <!-- Left-aligned headline, a faint background glyph on the right, a vertical        -->
+  <!-- contact rail in the corner, and a divider-separated stats row underneath.       -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <section class="relative overflow-hidden pt-[172px] px-5 sm:px-10 lg:px-20 pb-16">
+
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="pointer-events-none absolute z-0 text-text-primary opacity-[0.05] -right-4 md:-right-8 top-1/2 -translate-y-[56%] w-[240px] md:w-[340px] lg:w-[440px] h-auto">
+      <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+    </svg>
+
+    <div class="anim-reveal animate-reveal [animation-delay:0.5s] opacity-0 hidden lg:flex flex-col items-center gap-3 absolute right-8 xl:right-12 top-1/2 -translate-y-1/2 z-[2]">
+      <span class="w-px h-[34px] bg-glass-border"></span>
+      <a href="mailto:hello@alexrivera.dev" aria-label="Email" class="w-9 h-9 rounded-full flex items-center justify-center text-text-muted transition-colors hover:text-text-primary hover:bg-glass-fill-strong">
+        <svg class="w-[15px] h-[15px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </a>
+      <a href="#" aria-label="GitHub" class="w-9 h-9 rounded-full flex items-center justify-center text-text-muted transition-colors hover:text-text-primary hover:bg-glass-fill-strong">
+        <svg class="w-[15px] h-[15px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 3.5 5.4 3.8 5.4 3.8a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 10.2c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.1-.5 2V22"/></svg>
+      </a>
+      <a href="#" aria-label="LinkedIn" class="w-9 h-9 rounded-full flex items-center justify-center text-text-muted transition-colors hover:text-text-primary hover:bg-glass-fill-strong">
+        <svg class="w-[15px] h-[15px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <span class="w-px h-[34px] bg-glass-border"></span>
+    </div>
+
+    <div class="relative z-[1] max-w-[620px] mx-auto lg:mx-0 lg:mr-auto text-center lg:text-left">
+      <span class="anim-reveal animate-reveal [animation-delay:0.05s] opacity-0 inline-flex items-center gap-2 font-mono text-[0.74rem] tracking-[0.1em] uppercase text-text-faint">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent-2 shadow-[0_0_0_3px_rgba(67,217,200,0.18)]"></span>Software Engineer
+      </span>
+
+      <h1 class="anim-reveal animate-reveal [animation-delay:0.15s] opacity-0 mt-5 mx-auto lg:mx-0 max-w-[15ch] text-[clamp(2.2rem,5.6vw,3.7rem)] font-bold leading-[1.1] tracking-[-0.02em]">
+        Backend systems <span class="text-accent-2">that hold up</span> under real load
+      </h1>
+
+      <p class="anim-reveal animate-reveal [animation-delay:0.28s] opacity-0 mt-[18px] mx-auto lg:mx-0 max-w-[38ch] text-text-muted text-[1.02rem] leading-relaxed">
+        I design and ship infrastructure for teams that can't afford downtime.
+      </p>
+
+      <div class="anim-reveal animate-reveal [animation-delay:0.4s] opacity-0 mt-[34px] flex justify-center lg:justify-start">
+        <a href="#work" class="inline-flex items-center gap-2 bg-text-primary text-bg-base px-6 py-3.5 rounded-full text-[0.92rem] font-semibold transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(242,244,248,0.15)]">
+          Get Started
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="anim-reveal animate-reveal [animation-delay:0.55s] opacity-0 relative z-[1] mt-16 md:mt-[88px] flex items-center justify-center flex-wrap gap-y-3.5 text-[0.92rem] text-text-muted">
+      <span><strong class="text-text-primary font-bold mr-1.5">6+</strong>Years experience</span>
+      <span class="w-px h-4 bg-glass-border mx-6 hidden sm:inline-block"></span>
+      <span><strong class="text-text-primary font-bold mr-1.5">40+</strong>Projects shipped</span>
+      <span class="w-px h-4 bg-glass-border mx-6 hidden sm:inline-block"></span>
+      <span><strong class="text-text-primary font-bold mr-1.5">1.2M+</strong>Requests / day</span>
+      <span class="w-px h-4 bg-glass-border mx-6 hidden sm:inline-block"></span>
+      <span><strong class="text-text-primary font-bold mr-1.5">99.98%</strong>Uptime</span>
+    </div>
+  </section>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: SKILLS GRID                                                          -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <section id="skills" class="px-6 py-14">
+    <div class="max-w-[1060px] mx-auto">
+      <div class="mb-9 flex items-baseline justify-between gap-5 flex-wrap">
+        <div>
+          <h2 class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]">Skills</h2>
+          <p class="text-text-muted max-w-[44ch] text-[0.95rem] mt-1">The languages, frameworks, and infrastructure I work in most.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-panel rounded-2xl p-[22px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+          <span class="font-mono text-[0.76rem] text-text-faint">Languages</span>
+          <p class="text-text-muted text-[0.85rem] mt-1.5 leading-relaxed">Go and TypeScript for most production work; Rust when performance or memory safety matters; Python for tooling and data pipelines.</p>
+          <div class="flex flex-wrap gap-2 mt-3.5">
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">TypeScript</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Go</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Python</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Rust</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">SQL</span>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-[22px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+          <span class="font-mono text-[0.76rem] text-text-faint">Frameworks</span>
+          <p class="text-text-muted text-[0.85rem] mt-1.5 leading-relaxed">React and Next.js on the front end; Node and gRPC services on the back end, usually behind an API gateway.</p>
+          <div class="flex flex-wrap gap-2 mt-3.5">
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">React</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Node.js</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Next.js</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">gRPC</span>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-[22px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+          <span class="font-mono text-[0.76rem] text-text-faint">Infrastructure</span>
+          <p class="text-text-muted text-[0.85rem] mt-1.5 leading-relaxed">Kubernetes and Terraform for reproducible deploys; Kafka for anything event-driven; AWS as the default cloud.</p>
+          <div class="flex flex-wrap gap-2 mt-3.5">
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Kubernetes</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Terraform</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">AWS</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Kafka</span>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-[22px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+          <span class="font-mono text-[0.76rem] text-text-faint">Tools</span>
+          <p class="text-text-muted text-[0.85rem] mt-1.5 leading-relaxed">PostgreSQL as the source of truth, Redis for caching and rate limits, Grafana and Docker for everything in between.</p>
+          <div class="flex flex-wrap gap-2 mt-3.5">
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">PostgreSQL</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Redis</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Docker</span>
+            <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Grafana</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: SELECTED WORK (bento grid)                                           -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <section id="work" class="px-6 py-14">
+    <div class="max-w-[1060px] mx-auto">
+      <div class="mb-9 flex items-baseline justify-between gap-5 flex-wrap">
+        <div>
+          <h2 class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]">Selected work</h2>
+          <p class="text-text-muted max-w-[44ch] text-[0.95rem] mt-1">Projects spanning backend infrastructure, developer tooling, and production interfaces.</p>
+        </div>
+        <span class="font-mono text-[0.8rem] text-text-faint">04 projects</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+
+        <!-- Project 1 — wide feature card -->
+        <div class="glass-panel lg:col-span-4 rounded-[18px] p-6 flex flex-col justify-between min-h-[270px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-[34px] h-[34px] rounded-[9px] bg-glass-fill-strong border border-glass-border-soft flex items-center justify-center text-accent-2 flex-shrink-0">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="7" y1="17" x2="7.01" y2="17"/></svg>
+              </span>
+              <span class="font-mono text-[0.74rem] text-text-faint">Platform</span>
+            </div>
+            <h3 class="text-[1.24rem] font-semibold mt-2.5 tracking-[-0.01em]">Ledger — real-time billing engine</h3>
+            <p class="text-text-muted text-[0.9rem] mt-2.5">Northwind's old billing job ran nightly and reconciliation errors took days to trace. I redesigned it around an event-sourced model: every usage event is appended immutably, balances are derived rather than mutated, and disputes resolve by replaying the log instead of guessing. It now processes 40M+ events a day with zero reconciliation drift since launch.</p>
+          </div>
+          <div>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Go</span>
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Kafka</span>
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">PostgreSQL</span>
+            </div>
+            <a href="#" class="font-mono group inline-flex items-center gap-1.5 mt-4 text-[0.8rem] text-text-muted transition-colors hover:text-text-primary">
+              View project
+              <svg class="w-[13px] h-[13px] transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="glass-panel lg:col-span-2 rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-[34px] h-[34px] rounded-[9px] bg-glass-fill-strong border border-glass-border-soft flex items-center justify-center text-accent-2 flex-shrink-0">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              </span>
+              <span class="font-mono text-[0.74rem] text-text-faint">Tool</span>
+            </div>
+            <h3 class="text-[1.24rem] font-semibold mt-2.5 tracking-[-0.01em]">Flux CLI</h3>
+            <p class="text-text-muted text-[0.9rem] mt-2.5">New services at Ferro Labs took a full day to bootstrap — repo, CI, Dockerfile, k8s manifests, all by hand. Flux generates all of it from one interactive prompt in under a minute, with opinionated defaults the team actually agreed on. Adopted org-wide within a quarter; open-sourced afterward.</p>
+          </div>
+          <div>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Rust</span>
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">gRPC</span>
+            </div>
+            <a href="#" class="font-mono group inline-flex items-center gap-1.5 mt-4 text-[0.8rem] text-text-muted transition-colors hover:text-text-primary">
+              View project
+              <svg class="w-[13px] h-[13px] transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="glass-panel lg:col-span-2 rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-[34px] h-[34px] rounded-[9px] bg-glass-fill-strong border border-glass-border-soft flex items-center justify-center text-accent-2 flex-shrink-0">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </span>
+              <span class="font-mono text-[0.74rem] text-text-faint">Interface</span>
+            </div>
+            <h3 class="text-[1.24rem] font-semibold mt-2.5 tracking-[-0.01em]">Pulse dashboard</h3>
+            <p class="text-text-muted text-[0.9rem] mt-2.5">Built to replace a 30-second-lag Grafana setup the on-call team had stopped trusting. Metrics stream over WebSockets straight from the Kafka consumer group, so what's on screen is what's actually happening — sub-second, no polling.</p>
+          </div>
+          <div>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">React</span>
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">WebSockets</span>
+            </div>
+            <a href="#" class="font-mono group inline-flex items-center gap-1.5 mt-4 text-[0.8rem] text-text-muted transition-colors hover:text-text-primary">
+              View project
+              <svg class="w-[13px] h-[13px] transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 4 — wide feature card -->
+        <div class="glass-panel lg:col-span-4 rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-[34px] h-[34px] rounded-[9px] bg-glass-fill-strong border border-glass-border-soft flex items-center justify-center text-accent-2 flex-shrink-0">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h.79a4.5 4.5 0 1 1 0 9z"/></svg>
+              </span>
+              <span class="font-mono text-[0.74rem] text-text-faint">Infra</span>
+            </div>
+            <h3 class="text-[1.24rem] font-semibold mt-2.5 tracking-[-0.01em]">Northstar — deployment pipeline</h3>
+            <p class="text-text-muted text-[0.9rem] mt-2.5">Designed for a 12-person team shipping to production daily without a dedicated release manager. Northstar runs canary rollouts automatically, watches error-rate and latency budgets, and rolls back on its own if either is breached — no one has paged for a bad deploy since it went live.</p>
+          </div>
+          <div>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Kubernetes</span>
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Terraform</span>
+              <span class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted">Python</span>
+            </div>
+            <a href="#" class="font-mono group inline-flex items-center gap-1.5 mt-4 text-[0.8rem] text-text-muted transition-colors hover:text-text-primary">
+              View project
+              <svg class="w-[13px] h-[13px] transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: EXPERIENCE TIMELINE                                                  -->
+  <!-- The connecting rail between nodes is a plain absolutely-positioned div          -->
+  <!-- (rather than a ::before pseudo-element) so it stays pure Tailwind markup.       -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <section id="experience" class="px-6 py-14">
+    <div class="max-w-[1060px] mx-auto">
+      <div class="mb-9"><h2 class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]">Experience</h2></div>
+
+      <div class="flex flex-col">
+
+        <!-- Role 1 -->
+        <div class="relative flex items-start gap-4 pb-5">
+          <div class="absolute left-6 top-[54px] bottom-0 w-0.5 bg-glass-border"></div>
+          <div class="relative z-[1] w-12 h-12 rounded-[14px] flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-accent-1 to-accent-2 text-on-accent">
+            <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div class="glass-panel flex-1 rounded-2xl px-6 py-5 flex flex-col gap-3 bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+            <div class="flex items-baseline justify-between gap-4 flex-wrap">
+              <div>
+                <div class="font-medium">Senior Software Engineer</div>
+                <div class="text-text-muted text-[0.88rem] mt-1">Northwind Systems</div>
+              </div>
+              <span class="font-mono text-[0.76rem] text-text-faint whitespace-nowrap">2023 — Present</span>
+            </div>
+            <ul class="flex flex-col gap-2">
+              <li class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"><span class="mt-2 w-1 h-1 rounded-full bg-text-faint flex-shrink-0"></span>Led the rebuild of the billing platform onto an event-sourced model, eliminating reconciliation errors that had cost the finance team hours every week.</li>
+              <li class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"><span class="mt-2 w-1 h-1 rounded-full bg-text-faint flex-shrink-0"></span>Own on-call and reliability for three core services; brought p99 latency down 60% by moving hot paths off synchronous database calls.</li>
+              <li class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"><span class="mt-2 w-1 h-1 rounded-full bg-text-faint flex-shrink-0"></span>Mentor two mid-level engineers and run the team's fortnightly architecture review.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Role 2 -->
+        <div class="relative flex items-start gap-4 pb-5">
+          <div class="absolute left-6 top-[54px] bottom-0 w-0.5 bg-glass-border"></div>
+          <div class="relative z-[1] w-12 h-12 rounded-[14px] flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-accent-1 to-accent-2 text-on-accent">
+            <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div class="glass-panel flex-1 rounded-2xl px-6 py-5 flex flex-col gap-3 bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+            <div class="flex items-baseline justify-between gap-4 flex-wrap">
+              <div>
+                <div class="font-medium">Software Engineer</div>
+                <div class="text-text-muted text-[0.88rem] mt-1">Ferro Labs</div>
+              </div>
+              <span class="font-mono text-[0.76rem] text-text-faint whitespace-nowrap">2020 — 2023</span>
+            </div>
+            <ul class="flex flex-col gap-2">
+              <li class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"><span class="mt-2 w-1 h-1 rounded-full bg-text-faint flex-shrink-0"></span>Built Flux CLI to cut service bootstrap time from a day to under a minute; adopted by every engineering team within one quarter.</li>
+              <li class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"><span class="mt-2 w-1 h-1 rounded-full bg-text-faint flex-shrink-0"></span>Migrated the monolith's payments module into a standalone gRPC service with zero customer-facing downtime.</li>
+              <li class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"><span class="mt-2 w-1 h-1 rounded-full bg-text-faint flex-shrink-0"></span>Introduced structured logging and tracing standards that cut average incident triage time roughly in half.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Role 3 (last — no connecting rail) -->
+        <div class="relative flex items-start gap-4">
+          <div class="relative z-[1] w-12 h-12 rounded-[14px] flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-accent-1 to-accent-2 text-on-accent">
+            <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div class="glass-panel flex-1 rounded-2xl px-6 py-5 flex flex-col gap-3 bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+            <div class="flex items-baseline justify-between gap-4 flex-wrap">
+              <div>
+                <div class="font-medium">Backend Engineer, Intern</div>
+                <div class="text-text-muted text-[0.88rem] mt-1">Quill Data</div>
+              </div>
+              <span class="font-mono text-[0.76rem] text-text-faint whitespace-nowrap">2019 — 2020</span>
+            </div>
+            <ul class="flex flex-col gap-2">
+              <li class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"><span class="mt-2 w-1 h-1 rounded-full bg-text-faint flex-shrink-0"></span>Built an internal ETL pipeline that consolidated five spreadsheet-based reports into one queryable dataset.</li>
+              <li class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"><span class="mt-2 w-1 h-1 rounded-full bg-text-faint flex-shrink-0"></span>Wrote the first integration test suite for the ingestion service, catching two production-bound bugs before release.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: BLOG + OPEN SOURCE                                                   -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <section id="blog" class="px-6 py-14">
+    <div class="max-w-[1060px] mx-auto">
+      <div class="mb-9 flex items-baseline justify-between gap-5 flex-wrap">
+        <div>
+          <h2 class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]">Blog</h2>
+          <p class="text-text-muted max-w-[44ch] text-[0.95rem] mt-1">Notes on distributed systems, infrastructure, and things I learned the hard way.</p>
+        </div>
+        <span class="font-mono text-[0.8rem] text-text-faint">03 posts</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a href="#" class="group glass-panel rounded-[18px] p-6 flex flex-col gap-3.5 bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <span class="font-mono w-fit text-[0.72rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-accent-2">Engineering</span>
+          <h3 class="text-[1.12rem] font-semibold tracking-[-0.01em] leading-snug">Idempotency keys at scale</h3>
+          <p class="text-text-muted text-[0.89rem] leading-relaxed flex-1">How Ledger guarantees exactly-once billing across retried requests — the difference between a dedup table and a distributed lock, and why we picked the boring option.</p>
+          <div class="font-mono flex items-center justify-between text-[0.78rem] text-text-faint pt-3.5 border-t border-glass-border-soft">
+            <span>Mar 12, 2026 · 7 min</span>
+            <span class="inline-flex items-center gap-1.5 text-text-muted transition-transform group-hover:translate-x-0.5">Read <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+
+        <a href="#" class="group glass-panel rounded-[18px] p-6 flex flex-col gap-3.5 bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <span class="font-mono w-fit text-[0.72rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-accent-2">Systems</span>
+          <h3 class="text-[1.12rem] font-semibold tracking-[-0.01em] leading-snug">Backpressure without dropping data</h3>
+          <p class="text-text-muted text-[0.89rem] leading-relaxed flex-1">A walk through bounded queues, load shedding, and signaling backpressure upstream — and what actually happened the one time we got it wrong in production.</p>
+          <div class="font-mono flex items-center justify-between text-[0.78rem] text-text-faint pt-3.5 border-t border-glass-border-soft">
+            <span>Nov 3, 2025 · 9 min</span>
+            <span class="inline-flex items-center gap-1.5 text-text-muted transition-transform group-hover:translate-x-0.5">Read <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+
+        <a href="#" class="group glass-panel rounded-[18px] p-6 flex flex-col gap-3.5 bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <span class="font-mono w-fit text-[0.72rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-accent-2">Infrastructure</span>
+          <h3 class="text-[1.12rem] font-semibold tracking-[-0.01em] leading-snug">What zero-downtime deploys actually require</h3>
+          <p class="text-text-muted text-[0.89rem] leading-relaxed flex-1">Health checks and canaries aren't enough on their own. Notes from building Northstar on the failure modes that only show up after the tenth deploy, not the first.</p>
+          <div class="font-mono flex items-center justify-between text-[0.78rem] text-text-faint pt-3.5 border-t border-glass-border-soft">
+            <span>Jul 22, 2025 · 6 min</span>
+            <span class="inline-flex items-center gap-1.5 text-text-muted transition-transform group-hover:translate-x-0.5">Read <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Open source chips -->
+      <div class="flex flex-wrap gap-3 mt-5">
+        <a href="#" class="glass-panel flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-[0.85rem] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-0.5">
+          <svg class="w-[15px] h-[15px] text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 3.5 5.4 3.8 5.4 3.8a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 10.2c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.1-.5 2V22"/></svg>
+          <span>flux-cli</span><span class="font-mono text-[0.76rem] text-text-faint">1.2k ★</span>
+        </a>
+        <a href="#" class="glass-panel flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-[0.85rem] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-0.5">
+          <svg class="w-[15px] h-[15px] text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 3.5 5.4 3.8 5.4 3.8a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 10.2c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.1-.5 2V22"/></svg>
+          <span>go-idempotent</span><span class="font-mono text-[0.76rem] text-text-faint">890 ★</span>
+        </a>
+        <a href="#" class="glass-panel flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-[0.85rem] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-0.5">
+          <svg class="w-[15px] h-[15px] text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 3.5 5.4 3.8 5.4 3.8a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 10.2c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.1-.5 2V22"/></svg>
+          <span>pulse-client</span><span class="font-mono text-[0.76rem] text-text-faint">340 ★</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: TESTIMONIALS                                                         -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <section id="testimonials" class="px-6 py-14">
+    <div class="max-w-[1060px] mx-auto">
+      <div class="mb-9"><h2 class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]">What people say</h2></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between min-h-[200px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+          <p class="text-text-primary text-[0.95rem] leading-relaxed">"Alex rebuilt our billing pipeline without a single hour of downtime. Rare to find someone that careful."</p>
+          <div class="mt-4">
+            <div class="font-medium text-[0.9rem]">Priya Nair</div>
+            <div class="text-text-faint text-[0.8rem] mt-0.5">CTO, Northwind Systems</div>
+          </div>
+        </div>
+        <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between min-h-[200px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+          <p class="text-text-primary text-[0.95rem] leading-relaxed">"Consistently the person who catches the edge case everyone else missed, and explains why it matters."</p>
+          <div class="mt-4">
+            <div class="font-medium text-[0.9rem]">Marcus Webb</div>
+            <div class="text-text-faint text-[0.8rem] mt-0.5">Eng Lead, Ferro Labs</div>
+          </div>
+        </div>
+        <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between min-h-[200px] bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+          <p class="text-text-primary text-[0.95rem] leading-relaxed">"Turned a vague infra request into a system our whole team still relies on daily."</p>
+          <div class="mt-4">
+            <div class="font-medium text-[0.9rem]">Sana Iyer</div>
+            <div class="text-text-faint text-[0.8rem] mt-0.5">Product Manager, Quill Data</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: ABOUT                                                                -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <section id="about" class="px-6 py-14">
+    <div class="max-w-[1060px] mx-auto">
+      <div class="glass-panel rounded-[22px] p-7 sm:p-9 lg:p-11 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-9 bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+        <div>
+          <p class="text-text-muted text-[0.98rem] leading-relaxed">I'm a software engineer who cares about systems that stay fast under pressure and interfaces that stay out of the way. Most of my work sits at the boundary between backend infrastructure and the product experience built on top of it — I like being the person who can trace a slow page load all the way down to the query plan.</p>
+          <p class="text-text-muted text-[0.98rem] leading-relaxed mt-4">I started out building internal tooling at Quill Data, moved into backend and payments infrastructure at Ferro Labs, and now lead reliability and billing systems at Northwind. Somewhere in between I picked up a habit of writing things down, partly for my own sake — most of what's in the blog started as an internal doc.</p>
+          <p class="text-text-muted text-[0.98rem] leading-relaxed mt-4">Outside of client work, I maintain a few open-source tools and I'm slowly working through a personal project to visualize how distributed systems fail, one incident postmortem at a time.</p>
+        </div>
+        <div class="flex flex-col gap-4 justify-center">
+          <div><div class="font-mono text-[0.76rem] text-text-faint">Based in</div><div class="font-mono text-[0.92rem] mt-1">Bengaluru, India</div></div>
+          <div><div class="font-mono text-[0.76rem] text-text-faint">Focus</div><div class="font-mono text-[0.92rem] mt-1">Backend · Infra · DX tooling</div></div>
+          <div><div class="font-mono text-[0.76rem] text-text-faint">Experience</div><div class="font-mono text-[0.92rem] mt-1">6 years, 3 companies</div></div>
+          <div><div class="font-mono text-[0.76rem] text-text-faint">Availability</div><div class="font-mono text-[0.92rem] mt-1">Select freelance work</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: CONTACT CTA                                                          -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <section id="contact" class="px-6 py-14">
+    <div class="max-w-[1060px] mx-auto">
+      <div class="glass-panel rounded-[22px] p-8 sm:p-10 lg:p-14 text-center bg-glass-fill border border-glass-border backdrop-blur-xl backdrop-saturate-[1.4] shadow-glass">
+        <h2 class="text-[clamp(1.5rem,3.6vw,2.2rem)] font-semibold tracking-[-0.01em] max-w-[22ch] mx-auto">Have something worth building?</h2>
+        <p class="text-text-muted mt-3">Generally responsive within a day or two.</p>
+        <div class="mt-7 flex gap-3.5 justify-center flex-wrap">
+          <a href="mailto:hello@alexrivera.dev" class="inline-flex items-center px-6 py-3.5 rounded-[11px] text-[0.92rem] font-medium bg-gradient-to-br from-accent-1 to-accent-2 text-on-accent transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(124,108,246,0.3)]">
+            <svg class="w-[15px] h-[15px] mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@alexrivera.dev
+          </a>
+          <a href="#" class="glass-panel px-6 py-3.5 rounded-[11px] text-[0.92rem] font-medium border border-glass-border bg-glass-fill transition-transform hover:-translate-y-0.5">GitHub</a>
+          <a href="#" class="glass-panel px-6 py-3.5 rounded-[11px] text-[0.92rem] font-medium border border-glass-border bg-glass-fill transition-transform hover:-translate-y-0.5">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: FOOTER                                                               -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <footer class="px-6 pt-7 pb-12 text-text-faint text-[0.8rem]">
+    <div class="max-w-[1060px] mx-auto flex items-center justify-between gap-5 flex-wrap">
+      <span>© 2026 Alex Rivera.</span>
+      <div class="font-mono flex gap-5">
+        <a href="mailto:hello@alexrivera.dev" class="text-text-muted transition-colors hover:text-text-primary">Email</a>
+        <a href="#" class="text-text-muted transition-colors hover:text-text-primary">GitHub</a>
+        <a href="#" class="text-text-muted transition-colors hover:text-text-primary">LinkedIn</a>
+        <a href="#" class="text-text-muted transition-colors hover:text-text-primary">X</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- COMPONENT: THEME TOGGLE SCRIPT                                                  -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <script>
+    function toggleTheme() {
+      const root = document.documentElement;
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+    }
+  </script>
+
+</body>
+</html>
