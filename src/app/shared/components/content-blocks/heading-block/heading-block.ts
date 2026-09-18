@@ -6,10 +6,11 @@ import {
 import {
   HeadingBlockData
 } from '../../content-block/content-block.model';
+import { TextLineClampComponent } from 'text-line-clamp';
 
 @Component({
   selector: 'app-heading-block',
-  imports: [],
+  imports: [TextLineClampComponent],
   templateUrl: './heading-block.html',
   styleUrl: './heading-block.css'
 })

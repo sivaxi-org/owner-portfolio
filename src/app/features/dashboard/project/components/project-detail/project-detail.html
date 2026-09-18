@@ -42,31 +42,18 @@
 } @else if (project(); as current) {
 
 
-<!-- Project -->
-<section
-  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-6"
->
-  <div class="mb-6">
-    <h2 class="text-lg font-semibold text-text-primary">
-      Project
-    </h2>
-
-    <p class="mt-1 text-sm text-text-muted">
-      Update the project's basic information.
-    </p>
-  </div>
 
   <app-project-form
     [project]="current"
     (submitted)="saveProject($event)"
     (cancelled)="back()"
   />
-</section>
+
 
 
 <!-- Tags -->
 <section
-  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-6"
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-6 mt-8"
 >
   <div class="mb-6">
     <h2 class="text-lg font-semibold text-text-primary">

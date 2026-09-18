@@ -1,44 +1,148 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
 
-
 /* ==========================================================================
-   Global theme — Angular styles.css
-   Translated 1:1 from the Tailwind config you provided:
-   colors -> CSS custom properties
-   fontFamily -> font stacks
-   keyframes/animation -> native @keyframes + utility classes
+   Sivaxi Portfolio — Global Theme
+   --------------------------------------------------------------------------
+   Theme modes:
+   - Light
+   - Dark
+   - System
+
+   Theme is controlled by:
+     html.light
+     html.dark
+     html (system fallback)
+
+   Existing Tailwind-style utility classes continue to work through
+   CSS custom properties.
    ========================================================================== */
 
 
-/* ---- Design tokens (fill in exact hex/hsl values to taste) ---- */
+/* ==========================================================================
+   Design Tokens — LIGHT
+   ========================================================================== */
+
 :root {
+  color-scheme: light;
+
+  --bg-base: #f7f7f9;
+  --bg-elev: #ffffff;
+
+  --text-primary: #111116;
+  --text-muted: #666672;
+  --text-faint: #9696a3;
+
+  --accent-1: #6547e8;
+  --accent-2: #0cae9f;
+
+  --glass-fill: rgba(255, 255, 255, 0.55);
+  --glass-fill-strong: rgba(255, 255, 255, 0.78);
+
+  --glass-border: rgba(17, 17, 22, 0.12);
+  --glass-border-soft: rgba(17, 17, 22, 0.07);
+
+  --on-accent: #ffffff;
+
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.10);
+}
+
+
+/* ==========================================================================
+   DARK THEME
+   ========================================================================== */
+
+html.dark {
+  color-scheme: dark;
+
   --bg-base: #0a0a0f;
   --bg-elev: #13131c;
+
   --text-primary: #f5f5f7;
   --text-muted: #a1a1ac;
   --text-faint: #6b6b78;
+
   --accent-1: #7c5cff;
   --accent-2: #34d9c9;
+
   --glass-fill: rgba(255, 255, 255, 0.03);
   --glass-fill-strong: rgba(255, 255, 255, 0.12);
+
   --glass-border: rgba(255, 255, 255, 0.14);
   --glass-border-soft: rgba(255, 255, 255, 0.08);
+
   --on-accent: #0a0a0f;
+
   --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
-/* ---- Base ---- */
-html, body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  font-family: 'Space Grotesk', sans-serif;
+
+/* ==========================================================================
+   SYSTEM THEME
+   --------------------------------------------------------------------------
+   When no explicit light/dark class is applied, follow OS preference.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light):not(.dark) {
+    color-scheme: dark;
+
+    --bg-base: #0a0a0f;
+    --bg-elev: #13131c;
+
+    --text-primary: #f5f5f7;
+    --text-muted: #a1a1ac;
+    --text-faint: #6b6b78;
+
+    --accent-1: #7c5cff;
+    --accent-2: #34d9c9;
+
+    --glass-fill: rgba(255, 255, 255, 0.03);
+    --glass-fill-strong: rgba(255, 255, 255, 0.12);
+
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-border-soft: rgba(255, 255, 255, 0.08);
+
+    --on-accent: #0a0a0f;
+
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+  }
 }
 
-/* ---- fontFamily.display / fontFamily.mono ---- */
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  min-height: 100%;
+
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+html {
+  background-color: var(--bg-base);
+}
+
+body {
+  min-height: 100vh;
+}
+
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
 .font-display {
   font-family: 'Space Grotesk', sans-serif;
 }
@@ -47,59 +151,162 @@ html, body {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ---- Color utility classes (Tailwind-equivalent, for use outside Tailwind) ---- */
-.bg-bg-base       { background-color: var(--bg-base); }
-.bg-bg-elev        { background-color: var(--bg-elev); }
-.text-text-primary { color: var(--text-primary); }
-.text-text-muted   { color: var(--text-muted); }
-.text-text-faint   { color: var(--text-faint); }
-.bg-accent-1       { background-color: var(--accent-1); }
-.bg-accent-2       { background-color: var(--accent-2); }
-.text-accent-1     { color: var(--accent-1); }
-.text-accent-2     { color: var(--accent-2); }
-.bg-glass-fill        { background-color: var(--glass-fill); }
-.bg-glass-fill-strong { background-color: var(--glass-fill-strong); }
-.border-glass-border      { border-color: var(--glass-border); }
-.border-glass-border-soft { border-color: var(--glass-border-soft); }
-.text-on-accent    { color: var(--on-accent); }
-.shadow-glass      { box-shadow: var(--shadow-glass); }
 
 /* ==========================================================================
-   Keyframes
+   Color Utilities
+   --------------------------------------------------------------------------
+   Tailwind-equivalent utilities backed by CSS variables.
+   ========================================================================== */
+
+.bg-bg-base {
+  background-color: var(--bg-base);
+}
+
+.bg-bg-elev {
+  background-color: var(--bg-elev);
+}
+
+.text-text-primary {
+  color: var(--text-primary);
+}
+
+.text-text-muted {
+  color: var(--text-muted);
+}
+
+.text-text-faint {
+  color: var(--text-faint);
+}
+
+.bg-accent-1 {
+  background-color: var(--accent-1);
+}
+
+.bg-accent-2 {
+  background-color: var(--accent-2);
+}
+
+.text-accent-1 {
+  color: var(--accent-1);
+}
+
+.text-accent-2 {
+  color: var(--accent-2);
+}
+
+.bg-glass-fill {
+  background-color: var(--glass-fill);
+}
+
+.bg-glass-fill-strong {
+  background-color: var(--glass-fill-strong);
+}
+
+.border-glass-border {
+  border-color: var(--glass-border);
+}
+
+.border-glass-border-soft {
+  border-color: var(--glass-border-soft);
+}
+
+.text-on-accent {
+  color: var(--on-accent);
+}
+
+.shadow-glass {
+  box-shadow: var(--shadow-glass);
+}
+
+
+/* ==========================================================================
+   Optional Glass Utility
+   ========================================================================== */
+
+.glass {
+  background-color: var(--glass-fill);
+  border: 1px solid var(--glass-border-soft);
+  box-shadow: var(--shadow-glass);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+
+/* ==========================================================================
+   Animations
    ========================================================================== */
 
 @keyframes reveal {
-  0%   { opacity: 0; transform: translateY(12px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 
 @keyframes drift1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(5vw, 6vh) scale(1.1); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(5vw, 6vh) scale(1.1);
+  }
 }
+
 
 @keyframes drift2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(-6vw, 4vh) scale(0.92); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(-6vw, 4vh) scale(0.92);
+  }
 }
+
 
 @keyframes drift3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(3vw, -5vh) scale(1.08); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(3vw, -5vh) scale(1.08);
+  }
 }
+
 
 @keyframes scan {
-  0%, 100% { top: 18%; }
-  50%      { top: 78%; }
+  0%,
+  100% {
+    top: 18%;
+  }
+
+  50% {
+    top: 78%;
+  }
 }
+
 
 @keyframes spinslow {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
+
 /* ==========================================================================
-   Animation utility classes
-   (equivalent to Tailwind's `animate-*`, since plain CSS has no JIT engine)
+   Animation Utilities
    ========================================================================== */
 
 .animate-reveal {
@@ -126,19 +333,78 @@ html, body {
   animation: spinslow 24s linear infinite;
 }
 
-/* was 0.35 */
+
+/* ==========================================================================
+   Backdrop Mesh
+   ========================================================================== */
+
 #backdrop-mesh span {
   opacity: 0.15;
 }
 
+
+/* ==========================================================================
+   Video Background Scrim
+   ========================================================================== */
+
 .video-scrim {
   position: fixed;
   inset: 0;
-  z-index: -15; /* between video (-20) and backdrop (-10) */
+
+  z-index: -15;
+
+  pointer-events: none;
+
   background: linear-gradient(
     180deg,
-    rgba(10, 10, 15, 0.4) 0%,
+    rgba(10, 10, 15, 0.40) 0%,
     rgba(10, 10, 15, 0.75) 100%
   );
-  pointer-events: none;
 }
+
+
+/* ==========================================================================
+   LIGHT MODE — Video Scrim
+   ========================================================================== */
+
+html.light .video-scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(247, 247, 249, 0.45) 0%,
+    rgba(247, 247, 249, 0.78) 100%
+  );
+}
+
+
+/* ==========================================================================
+   SYSTEM LIGHT MODE — Video Scrim
+   ========================================================================== */
+
+@media (prefers-color-scheme: light) {
+  html:not(.dark) .video-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(247, 247, 249, 0.45) 0%,
+      rgba(247, 247, 249, 0.78) 100%
+    );
+  }
+}
+
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+

@@ -6,10 +6,11 @@ import {
 import {
   RichTextBlockData
 } from '../../content-block/content-block.model';
+import { TextLineClampComponent } from 'text-line-clamp';
 
 @Component({
   selector: 'app-rich-text-block',
-  imports: [],
+  imports: [TextLineClampComponent],
   templateUrl: './rich-text-block.html',
   styleUrl: './rich-text-block.css'
 })

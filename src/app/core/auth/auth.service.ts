@@ -37,6 +37,26 @@ export class AuthService {
     return keycloak.tokenParsed?.['preferred_username'];
   }
 
+get fullName(): string | undefined {
+  const firstName = keycloak.tokenParsed?.['given_name'];
+  const lastName = keycloak.tokenParsed?.['family_name'];
+
+  return [firstName, lastName]
+    .filter(Boolean)
+    .join(' ') || undefined;
+}
+
+get firstName(): string | undefined {
+  const firstName = keycloak.tokenParsed?.['given_name'];
+  return firstName
+}
+
+get lastName(): string | undefined {
+  const lastName = keycloak.tokenParsed?.['family_name'];
+
+  return lastName;
+}
+
   get email(): string | undefined {
     return keycloak.tokenParsed?.['email'];
   }

@@ -1,4 +1,4 @@
-<div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+<div class="min-w-0 max-w-full overflow-hidden rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
 
   <div class="mb-6">
 
@@ -10,7 +10,7 @@
       Text Block
     </h2>
 
-    <p class="mt-1 text-sm text-text-muted">
+    <p class="mt-1 text-sm text-text-muted break-words">
       {{ data()
         ? 'Update the text content of this block.'
         : 'Add simple text content to this section.'
@@ -19,7 +19,7 @@
 
   </div>
 
-  <div>
+  <div class="min-w-0 max-w-full">
 
     <label
       for="text-content"
@@ -34,12 +34,12 @@
       [value]="content()"
       (input)="updateContent($any($event.target).value)"
       placeholder="Enter your text..."
-      class="w-full resize-y rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm leading-6 text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+      class="box-border block w-full max-w-full resize-y whitespace-pre-wrap break-words overflow-x-hidden rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm leading-6 text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
     ></textarea>
 
   </div>
 
-  <div class="mt-6 flex justify-end gap-3">
+  <div class="mt-6 flex flex-wrap justify-end gap-3">
 
     <button
       type="button"

@@ -1,7 +1,7 @@
 @if (selectedType() === null) {
 
   <div
-    class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass"
+    class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass mb-6"
   >
 
     <div class="mb-6 flex items-start justify-between gap-4">
@@ -73,7 +73,8 @@
 
 @else {
 
-  @switch (selectedType()) {
+<div class=" mb-6">
+    @switch (selectedType()) {
 
     @case ('TEXT') {
 
@@ -145,5 +146,6 @@
     }
 
   }
+</div>
 
 }

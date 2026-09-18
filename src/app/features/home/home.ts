@@ -1,23 +1,89 @@
-import { Component } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  effect,
+  inject,
+} from '@angular/core';
+
+import { ThemeService } from '../../core/theme/theme.service';
 import { Navbar } from '../../shared/components/navbar/navbar';
-import { Footer } from '../../shared/components/footer/footer';
 import { Hero } from '../sections/hero/hero';
-import { About } from '../sections/about/about';
 import { Skills } from '../sections/skills/skills';
 import { Work } from '../sections/work/work';
-import { Experience } from '../sections/experience/experience';
 import { Blog } from '../sections/blog/blog';
+import { Experience } from '../sections/experience/experience';
 import { Testimonials } from '../sections/testimonials/testimonials';
+import { About } from '../sections/about/about';
 import { Contact } from '../sections/contact/contact';
+import { Footer } from '../../shared/components/footer/footer';
 import { ScrollScrubVideoDirective } from '../../core/directives/scroll-scrub-video.directive';
 
 @Component({
+  selector: 'app-home',
+  templateUrl: './home.html',
   imports: [
     ScrollScrubVideoDirective,
-    Navbar, Footer, Hero, Skills, Work, About, Experience, Blog, Testimonials, Contact
-  ],
-  selector: 'app-home',
-  styleUrl: './home.css',
-  templateUrl: './home.html',
+    Navbar, Hero, Skills, Work, Blog, Experience, Testimonials, About, Contact, Footer]
 })
-export class Home {}
+export class Home implements AfterViewInit {
+
+  readonly themeService = inject(ThemeService);
+
+  @ViewChild('backgroundVideo')
+  private readonly video?: ElementRef<HTMLVideoElement>;
+
+  private previousTime = 0;
+
+  constructor() {
+    effect(() => {
+      const theme = this.themeService.theme();
+
+      // Track the theme signal.
+      // The actual video update happens after Angular updates [src].
+      queueMicrotask(() => {
+        this.switchVideo(theme);
+      });
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.video?.nativeElement.play().catch(() => {});
+  }
+
+  get backgroundVideoSrc(): string {
+    return this.themeService.theme() === 'dark'
+      ? 'assets/videos/bg_video_dark.mp4'
+      : 'assets/videos/bg_video_light.mp4';
+  }
+
+  private switchVideo(theme: 'light' | 'dark'): void {
+    const video = this.video?.nativeElement;
+
+    if (!video) {
+      return;
+    }
+
+    const currentTime = video.currentTime;
+
+    this.previousTime = currentTime;
+
+    video.load();
+
+    video.addEventListener(
+      'loadedmetadata',
+      () => {
+        if (this.previousTime > 0) {
+          video.currentTime = Math.min(
+            this.previousTime,
+            video.duration || this.previousTime
+          );
+        }
+
+        video.play().catch(() => {});
+      },
+      { once: true }
+    );
+  }
+}
