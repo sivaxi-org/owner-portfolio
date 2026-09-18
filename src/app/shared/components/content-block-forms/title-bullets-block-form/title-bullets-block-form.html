@@ -1,0 +1,146 @@
+<div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+
+  <div class="mb-6">
+
+    <p class="text-xs font-medium uppercase tracking-wider text-accent-2">
+      New Block
+    </p>
+
+    <h2 class="mt-2 text-xl font-semibold text-text-primary">
+      Title & Bullet Points
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      Add a title followed by bullet points.
+    </p>
+
+  </div>
+
+
+  <div class="space-y-5">
+
+    <div>
+
+      <label
+        for="bullet-title"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Title
+      </label>
+
+      <input
+        id="bullet-title"
+        type="text"
+        [value]="title()"
+        (input)="updateTitle($any($event.target).value)"
+        placeholder="Experience"
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+
+    <div>
+
+      <label
+        for="new-bullet"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Add Bullet Point
+      </label>
+
+      <div class="flex gap-2">
+
+        <input
+          id="new-bullet"
+          type="text"
+          [value]="newItem()"
+          (input)="updateNewItem($any($event.target).value)"
+          (keydown.enter)="addItem()"
+          placeholder="Built Spring Boot microservices"
+          class="min-w-0 flex-1 rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+        />
+
+        <button
+          type="button"
+          (click)="addItem()"
+          class="rounded-xl border border-glass-border-soft px-4 py-2 text-sm text-text-muted hover:bg-glass-fill-strong hover:text-text-primary"
+        >
+          Add
+        </button>
+
+      </div>
+
+    </div>
+
+
+    @if (items().length > 0) {
+
+      <div>
+
+        <p class="mb-2 text-sm font-medium text-text-primary">
+          Bullet Points
+        </p>
+
+        <div class="space-y-2">
+
+          @for (
+            item of items();
+            track $index
+          ) {
+
+            <div
+              class="flex items-center gap-3 rounded-lg border border-glass-border-soft bg-glass-fill px-3 py-2"
+            >
+
+              <span class="text-accent-2">
+                •
+              </span>
+
+              <span class="flex-1 text-sm text-text-muted">
+                {{ item }}
+              </span>
+
+              <button
+                type="button"
+                (click)="removeItem($index)"
+                class="text-xs text-text-faint hover:text-text-primary"
+              >
+                Remove
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <div class="mt-6 flex justify-end gap-3">
+
+    <button
+      type="button"
+      (click)="cancel()"
+      class="rounded-lg border border-glass-border-soft px-4 py-2 text-sm text-text-muted hover:bg-glass-fill-strong"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="submit()"
+      [disabled]="!title().trim() || items().length === 0"
+      class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Add Block
+    </button>
+
+  </div>
+
+</div>

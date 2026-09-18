@@ -1,0 +1,21 @@
+<div class="rounded-xl border border-glass-border-soft bg-glass-fill p-5">
+
+  <div class="mb-4 text-xs font-medium uppercase tracking-wider text-accent-2">
+    {{ data().title }}
+  </div>
+
+  <div class="flex flex-wrap gap-2">
+
+    @for (skill of data().skills; track skill) {
+
+      <span
+        class="rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-1.5 text-xs text-text-muted"
+      >
+        {{ skill }}
+      </span>
+
+    }
+
+  </div>
+
+</div>

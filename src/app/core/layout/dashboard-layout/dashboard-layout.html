@@ -1,0 +1,189 @@
+
+<div class="min-h-screen bg-bg-base text-text-primary">
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside
+      class="hidden w-64 shrink-0 border-r border-glass-border-soft bg-bg-elev lg:block"
+    >
+
+      <!-- Logo -->
+      <div
+        class="flex h-16 items-center border-b border-glass-border-soft px-5"
+      >
+        <div>
+          <h1 class="text-lg font-semibold text-text-primary">
+            Portfolio
+          </h1>
+
+          <p class="text-xs text-text-muted">
+            Management
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="p-3">
+
+        <!-- General -->
+        <p
+          class="px-3 pb-2 pt-3 text-xs font-medium uppercase tracking-wider text-text-faint"
+        >
+          General
+        </p>
+
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Overview
+        </a>
+
+        <!-- Portfolio -->
+        <p
+          class="px-3 pb-2 pt-6 text-xs font-medium uppercase tracking-wider text-text-faint"
+        >
+          Portfolio
+        </p>
+
+        <a
+          routerLink="/dashboard/portfolio"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Portfolio
+        </a>
+
+        <a
+          routerLink="/dashboard/profile"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Profile
+        </a>
+
+        <a
+          routerLink="/dashboard/about"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          About
+        </a>
+
+        <!-- Content -->
+        <p
+          class="px-3 pb-2 pt-6 text-xs font-medium uppercase tracking-wider text-text-faint"
+        >
+          Content
+        </p>
+
+        <a
+          routerLink="/dashboard/projects"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Projects
+        </a>
+
+        <a
+          routerLink="/dashboard/experience"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Experience
+        </a>
+
+        <a
+          routerLink="/dashboard/skills"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Skills
+        </a>
+
+        <a
+          routerLink="/dashboard/stats"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Stats
+        </a>
+
+        <a
+          routerLink="/dashboard/testimonials"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Testimonials
+        </a>
+
+        <a
+          routerLink="/dashboard/contacts"
+          routerLinkActive="bg-glass-fill-strong text-text-primary"
+          class="mb-1 block rounded-lg px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+        >
+          Contacts
+        </a>
+
+      </nav>
+
+    </aside>
+
+    <!-- Main -->
+    <div class="flex min-w-0 flex-1 flex-col">
+
+      <!-- Header -->
+      <header
+        class="flex h-16 items-center justify-between border-b border-glass-border-soft bg-bg-elev px-5 sm:px-6"
+      >
+
+        <div class="flex items-center gap-3">
+
+          <!-- Mobile menu -->
+          <button
+            type="button"
+            class="rounded-lg p-2 text-text-muted transition hover:bg-glass-fill hover:text-text-primary lg:hidden"
+            aria-label="Open navigation"
+          >
+            ☰
+          </button>
+
+          <div>
+            <h2 class="text-sm font-medium text-text-primary">
+              Dashboard
+            </h2>
+
+            <p class="hidden text-xs text-text-muted sm:block">
+              Manage your portfolio
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Logout -->
+        <button
+          type="button"
+          (click)="logout()"
+          class="rounded-lg border border-glass-border px-3 py-2 text-sm font-medium text-text-muted transition hover:border-glass-border-strong hover:bg-glass-fill hover:text-text-primary"
+        >
+          Logout
+        </button>
+
+      </header>
+
+      <!-- Page -->
+      <main class="flex-1 p-5 sm:p-6">
+
+        <router-outlet />
+
+      </main>
+
+    </div>
+
+  </div>
+
+</div>
+

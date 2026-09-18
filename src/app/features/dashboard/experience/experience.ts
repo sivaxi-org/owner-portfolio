@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 
 
 import { ExperienceForm } from './experience-form/experience-form';
-import { ExperienceDto, ExperienceRequest, ExperienceService } from '../experience-service';
+import { ExperienceDto, ExperienceRequest, ExperienceService } from './experience-service';
 
 @Component({
 selector: 'app-experience',

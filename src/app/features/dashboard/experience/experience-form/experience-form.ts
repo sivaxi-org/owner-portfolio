@@ -9,7 +9,7 @@ signal
 import {
 ExperienceDto,
 ExperienceRequest
-} from '../../experience-service';
+} from '../experience-service';
 
 @Component({
 selector: 'app-experience-form',

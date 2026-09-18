@@ -1,156 +1,90 @@
-<div class="mx-auto max-w-4xl">
+<div class="space-y-8">
 
-  <!-- Page Header -->
-  <div class="mb-8">
+  <!-- About Section -->
+  <section>
 
-    <div class="mb-2 flex items-center gap-2">
-      <span class="h-2 w-2 rounded-full bg-accent-2"></span>
+    <div class="mb-6">
 
-      <span
-        class="text-xs font-medium uppercase tracking-[0.18em] text-text-faint"
-      >
-        Portfolio
-      </span>
+      <p class="text-xs font-medium uppercase tracking-wider text-accent-2">
+        About
+      </p>
+
+      <h1 class="mt-2 text-2xl font-semibold text-text-primary">
+        About Section
+      </h1>
+
+      <p class="mt-2 text-sm text-text-muted">
+        Manage the title and content displayed in your portfolio's About section.
+      </p>
+
     </div>
 
-    <h1 class="text-2xl font-semibold tracking-tight text-text-primary">
-      About
-    </h1>
+    @if (about(); as current) {
 
-    <p class="mt-2 text-sm text-text-muted">
-      Manage the title and content blocks of your about section.
-    </p>
+      <div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
 
-  </div>
+        <div class="mb-6">
 
+          <h2 class="text-lg font-semibold text-text-primary">
+            Section Details
+          </h2>
 
-  @if (about(); as data) {
+          <p class="mt-1 text-sm text-text-muted">
+            Configure the main title for your About section.
+          </p>
 
-    <!-- About Settings -->
-    <section
-      class="overflow-hidden rounded-2xl border border-glass-border-soft bg-glass-fill shadow-glass"
-    >
-
-      <!-- Header -->
-      <div
-        class="border-b border-glass-border-soft px-6 py-5 sm:px-7"
-      >
-
-        <h2 class="text-base font-semibold text-text-primary">
-          About Information
-        </h2>
-
-        <p class="mt-1 text-sm text-text-muted">
-          Configure the main title for your about section.
-        </p>
-
-      </div>
-
-
-      <!-- Form -->
-      <div class="space-y-6 p-6 sm:p-7">
+        </div>
 
         <div>
 
           <label
-            for="title"
+            for="about-title"
             class="mb-2 block text-sm font-medium text-text-primary"
           >
             Title
           </label>
 
           <input
-            id="title"
+            id="about-title"
             type="text"
-            [value]="data.title"
-            (input)="updateField('title', $any($event.target).value)"
+            [value]="current.title"
+            (input)="updateField(
+              'title',
+              $any($event.target).value
+            )"
             placeholder="About Me"
-            class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+            class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
           />
 
         </div>
 
-
-        <!-- Divider -->
-        <div class="border-t border-glass-border-soft"></div>
-
-
-        <!-- Actions -->
-        <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-
-          <button
-            type="button"
-            (click)="loadAbout()"
-            class="rounded-xl border border-glass-border px-4 py-2.5 text-sm font-medium text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
-          >
-            Cancel
-          </button>
+        <div class="mt-6 flex justify-end">
 
           <button
             type="button"
             (click)="saveAbout()"
-            class="rounded-xl bg-accent-1 px-5 py-2.5 text-sm font-medium text-on-accent transition hover:opacity-90"
+            [disabled]="!current.title.trim()"
+            class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Save Changes
+            Save About
           </button>
 
         </div>
 
       </div>
 
-    </section>
+    }
+
+  </section>
 
 
-    <!-- Content Blocks -->
-    <section
-      class="mt-6 overflow-hidden rounded-2xl border border-glass-border-soft bg-glass-fill shadow-glass"
-    >
+  <!-- Content Blocks -->
+  <section>
 
-      <div
-        class="border-b border-glass-border-soft px-6 py-5 sm:px-7"
-      >
+    <app-content-block-manager
+      url="/api/about/blocks"
+    />
 
-        <h2 class="text-base font-semibold text-text-primary">
-          Content Blocks
-        </h2>
-
-        <p class="mt-1 text-sm text-text-muted">
-          Manage the content blocks displayed in your about section.
-        </p>
-
-      </div>
-
-
-      <div class="p-6 sm:p-7">
-
-        <div
-          class="rounded-xl border border-dashed border-glass-border-soft bg-bg-elev px-6 py-10 text-center"
-        >
-
-          <p class="text-sm font-medium text-text-primary">
-            Content blocks
-          </p>
-
-          <p class="mt-2 text-xs text-text-faint">
-            Block management will be available here.
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  } @else {
-
-    <section
-      class="rounded-2xl border border-glass-border-soft bg-glass-fill p-7 shadow-glass"
-    >
-      <p class="text-sm text-text-muted">
-        Loading about information...
-      </p>
-    </section>
-
-  }
+  </section>
 
 </div>

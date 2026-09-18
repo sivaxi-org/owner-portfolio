@@ -14,7 +14,7 @@ Router
 
 import { ExperienceForm } from '../experience-form/experience-form';
 import { ContentBlockManager } from '../../../../shared/components/content-block-manager/content-block-manager';
-import { ExperienceDto, ExperienceRequest, ExperienceService } from '../../experience-service';
+import { ExperienceDto, ExperienceRequest, ExperienceService } from '../experience-service';
 
 
 @Component({

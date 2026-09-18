@@ -1,0 +1,27 @@
+<div class="rounded-xl border border-glass-border-soft bg-glass-fill p-5">
+
+  <div class="mb-4 text-xs font-medium uppercase tracking-wider text-accent-2">
+    {{ data().title }}
+  </div>
+
+  <ul class="space-y-2">
+
+    @for (item of data().items; track $index) {
+
+      <li class="flex gap-2 text-sm leading-6 text-text-muted">
+
+        <span class="text-accent-2">
+          •
+        </span>
+
+        <span>
+          {{ item }}
+        </span>
+
+      </li>
+
+    }
+
+  </ul>
+
+</div>

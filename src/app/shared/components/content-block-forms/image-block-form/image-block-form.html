@@ -1,0 +1,87 @@
+<div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+
+  <div class="mb-6">
+
+    <p class="text-xs font-medium uppercase tracking-wider text-accent-2">
+      New Block
+    </p>
+
+    <h2 class="mt-2 text-xl font-semibold text-text-primary">
+      Image Block
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      Add an image using its URL.
+    </p>
+
+  </div>
+
+
+  <div class="space-y-5">
+
+    <div>
+
+      <label
+        for="image-url"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Image URL
+      </label>
+
+      <input
+        id="image-url"
+        type="url"
+        [value]="url()"
+        (input)="updateUrl($any($event.target).value)"
+        placeholder="https://example.com/image.jpg"
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+
+    <div>
+
+      <label
+        for="image-alt"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Alt Text
+      </label>
+
+      <input
+        id="image-alt"
+        type="text"
+        [value]="alt()"
+        (input)="updateAlt($any($event.target).value)"
+        placeholder="Describe the image..."
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+  </div>
+
+
+  <div class="mt-6 flex justify-end gap-3">
+
+    <button
+      type="button"
+      (click)="cancel()"
+      class="rounded-lg border border-glass-border-soft px-4 py-2 text-sm text-text-muted hover:bg-glass-fill-strong"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="submit()"
+      [disabled]="!url().trim() || !alt().trim()"
+      class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Add Image
+    </button>
+
+  </div>
+
+</div>
