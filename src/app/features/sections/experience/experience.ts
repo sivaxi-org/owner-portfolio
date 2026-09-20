@@ -1,9 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+
+import { PortfolioHomeResponse } from '../../home/home.service';
+import { ContentBlockRenderer } from '../../../shared/components/content-block-renderer/content-block-renderer';
 
 @Component({
-  imports: [],
   selector: 'app-experience',
+  imports: [ContentBlockRenderer],
   styleUrl: './experience.css',
   templateUrl: './experience.html',
 })
-export class Experience {}
+export class Experience {
+  readonly experienceData =
+    input<any | undefined>(undefined);
+}

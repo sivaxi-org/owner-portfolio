@@ -14,14 +14,16 @@ import {
 
 import { SkillCategoryForm } from './skill-category-form/skill-category-form';
 import { SkillForm } from './skill-form/skill-form';
+import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon-renderer';
 
 @Component({
   selector: 'app-skills',
   standalone: true,
   imports: [
     SkillCategoryForm,
-    SkillForm
-  ],
+    SkillForm,
+    IconRenderer
+],
   templateUrl: './skills.html',
   styleUrl: './skills.css'
 })

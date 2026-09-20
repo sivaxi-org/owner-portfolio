@@ -104,7 +104,7 @@
 
                   @if (category.icon) {
                     <span class="text-lg text-accent-1">
-                      {{ category.icon }}
+                      <app-icon  [svg]="category.icon" ></app-icon>
                     </span>
                   }
 
@@ -239,7 +239,7 @@
 
                           @if (skill.icon) {
                             <span class="shrink-0 text-accent-1">
-                              {{ skill.icon }}
+                              <app-icon [svg]="skill.icon"></app-icon>
                             </span>
                           }
 

@@ -1,9 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+
+import { PortfolioHomeResponse } from '../../home/home.service';
+import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon-renderer';
 
 @Component({
-  imports: [],
   selector: 'app-contact',
+  imports: [IconRenderer],
   styleUrl: './contact.css',
   templateUrl: './contact.html',
 })
-export class Contact {}
+export class Contact {
+  readonly contactsData =
+    input<any | undefined>(undefined);
+}

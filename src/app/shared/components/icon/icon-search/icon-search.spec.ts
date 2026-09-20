@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Statics } from './statics';
+import { IconSearch } from './icon-search';
 
-describe('Statics', () => {
-  let component: Statics;
-  let fixture: ComponentFixture<Statics>;
+describe('IconSearch', () => {
+  let component: IconSearch;
+  let fixture: ComponentFixture<IconSearch>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Statics],
+      imports: [IconSearch],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Statics);
+    fixture = TestBed.createComponent(IconSearch);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

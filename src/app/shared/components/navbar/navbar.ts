@@ -9,7 +9,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ThemeSwitcher, UpperCasePipe],
+  imports: [ThemeSwitcher],
   styleUrl: './navbar.css',
   templateUrl: './navbar.html',
 })
@@ -18,6 +18,8 @@ export class Navbar {
   protected readonly IMAGE_PATHS = IMAGE_PATHS;
 
   protected menuOpen = false;
+
+  
 
   constructor(
     public themeService: ThemeService,

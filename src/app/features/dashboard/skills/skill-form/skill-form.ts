@@ -8,11 +8,12 @@ import {
 } from '@angular/core';
 
 import { SkillDto } from '../skill-service';
+import { IconPicker } from '../../../../shared/components/icon/icon-picker/icon-picker';
 
 @Component({
   selector: 'app-skill-form',
   standalone: true,
-  imports: [],
+  imports: [IconPicker],
   templateUrl: './skill-form.html',
   styleUrl: './skill-form.css'
 })

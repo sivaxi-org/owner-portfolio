@@ -9,11 +9,12 @@ import {
 import {
   SkillCategoryDto
 } from '../skill-service';
+import { IconPicker } from '../../../../shared/components/icon/icon-picker/icon-picker';
 
 @Component({
   selector: 'app-skill-category-form',
   standalone: true,
-  imports: [],
+  imports: [IconPicker],
   templateUrl: './skill-category-form.html',
   styleUrl: './skill-category-form.css'
 })

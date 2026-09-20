@@ -1,9 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+
+import { ContactDto } from '../../dashboard/contact/contact-service';
+import { ProfileResponse } from '../../dashboard/portfolio/portfolio-service';
+import { StatsDto } from '../../dashboard/stats/stats-service';
+import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon-renderer';
 
 @Component({
-  imports: [],
   selector: 'app-hero',
+  imports: [IconRenderer],
   styleUrl: './hero.css',
   templateUrl: './hero.html',
 })
-export class Hero {}
+export class Hero {
+
+  readonly portfolioData = input<ProfileResponse | undefined>();
+
+  readonly contacts = input<ContactDto[]>([]);
+
+  readonly stats = input<StatsDto[]>([]);
+
+}

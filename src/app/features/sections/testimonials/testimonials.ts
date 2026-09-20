@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+
+import { PortfolioHomeResponse } from '../../home/home.service';
 
 @Component({
-  imports: [],
   selector: 'app-testimonials',
+  imports: [],
   styleUrl: './testimonials.css',
   templateUrl: './testimonials.html',
 })
-export class Testimonials {}
+export class Testimonials {
+  readonly testimonialsData =
+    input<any | undefined>(undefined);
+}

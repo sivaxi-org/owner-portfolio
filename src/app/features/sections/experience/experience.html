@@ -1,4 +1,5 @@
 <section id="experience" class="px-6 py-14">
+
   <div class="max-w-6xl mx-auto">
 
     <!-- Section Header -->
@@ -12,310 +13,136 @@
 
 
     <!-- Experience List -->
-    <div class="flex flex-col gap-4">
+    @if (experienceData()?.experiences?.length) {
 
+      <div class="flex flex-col gap-4">
 
-      <!-- Role 1 -->
-      <article
-        class="glass-panel rounded-2xl px-5 sm:px-6 py-5 bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-all duration-200 hover:border-glass-border-soft"
-      >
+        @for (
+          experience of experienceData()!.experiences;
+          track experience.id
+        ) {
 
-        <!-- Header -->
-        <div class="flex items-start gap-4">
-
-          <!-- Icon -->
-          <div
-            class="w-11 h-11 shrink-0 rounded-[13px] flex items-center justify-center bg-gradient-to-br from-accent-1 to-accent-2 text-on-accent"
+          <article
+            class="glass-panel rounded-2xl px-5 sm:px-6 py-5 bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-all duration-200 hover:border-glass-border-soft"
           >
-            <svg
-              class="w-[20px] h-[20px]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="2" y="7" width="20" height="14" rx="2"/>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-            </svg>
-          </div>
 
+            <!-- Header -->
+            <div class="flex items-start gap-4">
 
-          <!-- Role -->
-          <div class="flex-1 min-w-0">
+              <!-- Company Logo / Fallback -->
+              <div
+                class="w-11 h-11 shrink-0 rounded-[13px] flex items-center justify-center bg-glass-fill-strong border border-glass-border-soft text-text-primary overflow-hidden"
+              >
 
-            <div
-              class="flex items-start justify-between gap-4 flex-wrap"
-            >
+                @if (experience.companyLogoUrl) {
 
-              <div>
-                <h3 class="font-medium text-text-primary">
-                  Senior Software Engineer
-                </h3>
+                  <img
+                    [src]="experience.companyLogoUrl"
+                    [alt]="experience.company"
+                    class="w-full h-full object-cover"
+                  />
 
-                <p class="text-text-muted text-[0.88rem] mt-1">
-                  Northwind Systems
-                </p>
+                } @else {
+
+                  <span
+                    class="font-mono text-sm font-semibold uppercase"
+                  >
+                    {{ experience.company.charAt(0).toUpperCase() }}
+                  </span>
+
+                }
+
               </div>
 
-              <span
-                class="font-mono text-[0.76rem] text-text-faint whitespace-nowrap"
-              >
-                2023 — Present
-              </span>
+
+              <!-- Role -->
+              <div class="flex-1 min-w-0">
+
+                <div
+                  class="flex items-start justify-between gap-4 flex-wrap"
+                >
+
+                  <div>
+
+                    @if (experience.companyUrl) {
+
+                      <a
+                        [href]="experience.companyUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-medium text-text-primary hover:underline underline-offset-4"
+                      >
+                        {{ experience.jobTitle }}
+                      </a>
+
+                    } @else {
+
+                      <h3 class="font-medium text-text-primary">
+                        {{ experience.jobTitle }}
+                      </h3>
+
+                    }
+
+                    <p class="text-text-muted text-[0.88rem] mt-1">
+                      {{ experience.company }}
+                    </p>
+
+                  </div>
+
+
+                  <!-- Period -->
+                  <span
+                    class="font-mono text-[0.76rem] text-text-faint whitespace-nowrap"
+                  >
+                    {{ experience.startDate }}
+
+                    —
+
+                    {{ experience.endDate || 'Present' }}
+                  </span>
+
+                </div>
+
+              </div>
 
             </div>
 
-          </div>
 
-        </div>
+            <!-- Content Blocks -->
+            @if (experience.contentBlocks?.length) {
 
+              <div
+                class="mt-5 ml-0 sm:ml-[60px] flex flex-col gap-2"
+              >
 
-        <!-- Achievements -->
-        <ul class="mt-5 ml-0 sm:ml-[60px] flex flex-col gap-2">
+                @for (
+                  block of experience.contentBlocks;
+                  track block.id || $index
+                ) {
 
-          <li
-            class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"
-          >
-            <span
-              class="mt-[0.55rem] w-1 h-1 rounded-full bg-text-faint shrink-0"
-            ></span>
+                 <app-content-block-renderer [block]="block" />
+                }
 
-            <span>
-              Led the rebuild of the billing platform onto an event-sourced
-              model, eliminating reconciliation errors that had cost the
-              finance team hours every week.
-            </span>
-          </li>
-
-          <li
-            class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"
-          >
-            <span
-              class="mt-[0.55rem] w-1 h-1 rounded-full bg-text-faint shrink-0"
-            ></span>
-
-            <span>
-              Own on-call and reliability for three core services; brought
-              p99 latency down 60% by moving hot paths off synchronous
-              database calls.
-            </span>
-          </li>
-
-          <li
-            class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"
-          >
-            <span
-              class="mt-[0.55rem] w-1 h-1 rounded-full bg-text-faint shrink-0"
-            ></span>
-
-            <span>
-              Mentor two mid-level engineers and run the team's fortnightly
-              architecture review.
-            </span>
-          </li>
-
-        </ul>
-
-      </article>
-
-
-      <!-- Role 2 -->
-      <article
-        class="glass-panel rounded-2xl px-5 sm:px-6 py-5 bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-all duration-200 hover:border-glass-border-soft"
-      >
-
-        <!-- Header -->
-        <div class="flex items-start gap-4">
-
-          <!-- Icon -->
-          <div
-            class="w-11 h-11 shrink-0 rounded-[13px] flex items-center justify-center bg-gradient-to-br from-accent-1 to-accent-2 text-on-accent"
-          >
-            <svg
-              class="w-[20px] h-[20px]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="2" y="7" width="20" height="14" rx="2"/>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-            </svg>
-          </div>
-
-
-          <!-- Role -->
-          <div class="flex-1 min-w-0">
-
-            <div
-              class="flex items-start justify-between gap-4 flex-wrap"
-            >
-
-              <div>
-                <h3 class="font-medium text-text-primary">
-                  Software Engineer
-                </h3>
-
-                <p class="text-text-muted text-[0.88rem] mt-1">
-                  Ferro Labs
-                </p>
               </div>
 
-              <span
-                class="font-mono text-[0.76rem] text-text-faint whitespace-nowrap"
-              >
-                2020 — 2023
-              </span>
+            }
 
-            </div>
+          </article>
 
-          </div>
+        }
 
-        </div>
+      </div>
 
+    } @else {
 
-        <!-- Achievements -->
-        <ul class="mt-5 ml-0 sm:ml-[60px] flex flex-col gap-2">
-
-          <li
-            class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"
-          >
-            <span
-              class="mt-[0.55rem] w-1 h-1 rounded-full bg-text-faint shrink-0"
-            ></span>
-
-            <span>
-              Built Flux CLI to cut service bootstrap time from a day to
-              under a minute; adopted by every engineering team within one
-              quarter.
-            </span>
-          </li>
-
-          <li
-            class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"
-          >
-            <span
-              class="mt-[0.55rem] w-1 h-1 rounded-full bg-text-faint shrink-0"
-            ></span>
-
-            <span>
-              Migrated the monolith's payments module into a standalone
-              gRPC service with zero customer-facing downtime.
-            </span>
-          </li>
-
-          <li
-            class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"
-          >
-            <span
-              class="mt-[0.55rem] w-1 h-1 rounded-full bg-text-faint shrink-0"
-            ></span>
-
-            <span>
-              Introduced structured logging and tracing standards that cut
-              average incident triage time roughly in half.
-            </span>
-          </li>
-
-        </ul>
-
-      </article>
-
-
-      <!-- Role 3 -->
-      <article
-        class="glass-panel rounded-2xl px-5 sm:px-6 py-5 bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-all duration-200 hover:border-glass-border-soft"
+      <div
+        class="rounded-2xl border border-glass-border bg-glass-fill p-8 text-center text-text-muted"
       >
+        No experience available.
+      </div>
 
-        <!-- Header -->
-        <div class="flex items-start gap-4">
+    }
 
-          <!-- Icon -->
-          <div
-            class="w-11 h-11 shrink-0 rounded-[13px] flex items-center justify-center bg-gradient-to-br from-accent-1 to-accent-2 text-on-accent"
-          >
-            <svg
-              class="w-[20px] h-[20px]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="2" y="7" width="20" height="14" rx="2"/>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-            </svg>
-          </div>
-
-
-          <!-- Role -->
-          <div class="flex-1 min-w-0">
-
-            <div
-              class="flex items-start justify-between gap-4 flex-wrap"
-            >
-
-              <div>
-                <h3 class="font-medium text-text-primary">
-                  Backend Engineer, Intern
-                </h3>
-
-                <p class="text-text-muted text-[0.88rem] mt-1">
-                  Quill Data
-                </p>
-              </div>
-
-              <span
-                class="font-mono text-[0.76rem] text-text-faint whitespace-nowrap"
-              >
-                2019 — 2020
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- Achievements -->
-        <ul class="mt-5 ml-0 sm:ml-[60px] flex flex-col gap-2">
-
-          <li
-            class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"
-          >
-            <span
-              class="mt-[0.55rem] w-1 h-1 rounded-full bg-text-faint shrink-0"
-            ></span>
-
-            <span>
-              Built an internal ETL pipeline that consolidated five
-              spreadsheet-based reports into one queryable dataset.
-            </span>
-          </li>
-
-          <li
-            class="flex gap-2.5 text-text-muted text-[0.9rem] leading-relaxed"
-          >
-            <span
-              class="mt-[0.55rem] w-1 h-1 rounded-full bg-text-faint shrink-0"
-            ></span>
-
-            <span>
-              Wrote the first integration test suite for the ingestion
-              service, catching two production-bound bugs before release.
-            </span>
-          </li>
-
-        </ul>
-
-      </article>
-
-    </div>
   </div>
+
 </section>

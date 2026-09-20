@@ -17,7 +17,7 @@ import { TextBlockData } from '../../content-block/content-block.model';
     <text-line-clamp
       class="text-sm leading-7 text-text-muted"
       [text]="data().content"
-      [clamp]="3"
+      [clamp]="5"
       [buttonName]="'Show more'"
       [buttonColor]="'var(--accent-2)'"
     />

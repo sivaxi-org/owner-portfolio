@@ -5,6 +5,7 @@ import {
   ViewChild,
   effect,
   inject,
+  signal,
 } from '@angular/core';
 
 import { ThemeService } from '../../core/theme/theme.service';
@@ -19,17 +20,35 @@ import { About } from '../sections/about/about';
 import { Contact } from '../sections/contact/contact';
 import { Footer } from '../../shared/components/footer/footer';
 import { ScrollScrubVideoDirective } from '../../core/directives/scroll-scrub-video.directive';
+import {
+  PortfolioHomeResponse,
+  PortfolioHomeService,
+} from './home.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
   imports: [
     ScrollScrubVideoDirective,
-    Navbar, Hero, Skills, Work, Blog, Experience, Testimonials, About, Contact, Footer]
+    Navbar,
+    Hero,
+    Skills,
+    Work,
+    Blog,
+    Experience,
+    Testimonials,
+    About,
+    Contact,
+    Footer,
+  ],
 })
 export class Home implements AfterViewInit {
 
   readonly themeService = inject(ThemeService);
+
+  private readonly portfolioHomeService = inject(PortfolioHomeService);
+
+  readonly portfolio = signal<PortfolioHomeResponse | undefined>(undefined);
 
   @ViewChild('backgroundVideo')
   private readonly video?: ElementRef<HTMLVideoElement>;
@@ -40,12 +59,12 @@ export class Home implements AfterViewInit {
     effect(() => {
       const theme = this.themeService.theme();
 
-      // Track the theme signal.
-      // The actual video update happens after Angular updates [src].
       queueMicrotask(() => {
         this.switchVideo(theme);
       });
     });
+
+    this.loadPortfolio();
   }
 
   ngAfterViewInit(): void {
@@ -56,6 +75,19 @@ export class Home implements AfterViewInit {
     return this.themeService.theme() === 'dark'
       ? 'assets/videos/bg_video_dark.mp4'
       : 'assets/videos/bg_video_light.mp4';
+  }
+
+  private loadPortfolio(): void {
+    const username = 'ajaymalah';
+
+    this.portfolioHomeService.getPortfolio(username).subscribe({
+      next: (portfolio) => {
+        this.portfolio.set(portfolio);
+      },
+      error: (error) => {
+        console.error('Failed to load portfolio:', error);
+      },
+    });
   }
 
   private switchVideo(theme: 'light' | 'dark'): void {

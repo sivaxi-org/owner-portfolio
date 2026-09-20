@@ -28,19 +28,8 @@
     Icon
   </label>
 
-  <input
-    id="contact-icon"
-    type="text"
-    maxlength="100"
-    [value]="icon()"
-    (input)="icon.set($any($event.target).value)"
-    placeholder="e.g. github, linkedin, mail"
-    class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
-  />
+  <app-icon-picker  (iconChange)="icon.set($any($event))" ></app-icon-picker>
 
-  <p class="mt-1.5 text-xs text-text-faint">
-    Icon name used by the portfolio UI.
-  </p>
 </div>
 
 <!-- Type -->

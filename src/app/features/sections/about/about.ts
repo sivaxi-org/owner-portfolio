@@ -1,9 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+
+import { PortfolioHomeResponse } from '../../home/home.service';
+import { ContentBlockRenderer } from '../../../shared/components/content-block-renderer/content-block-renderer';
 
 @Component({
-  imports: [],
   selector: 'app-about',
+  imports: [ContentBlockRenderer],
   styleUrl: './about.css',
   templateUrl: './about.html',
 })
-export class About {}
+export class About {
+  readonly portfolioData =
+    input<any| undefined>(undefined);
+
+  readonly aboutData =
+    input<any | undefined>(undefined);
+}

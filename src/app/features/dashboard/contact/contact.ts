@@ -11,11 +11,12 @@ ContactService
 } from './contact-service';
 
 import { ContactForm } from './contact-form/contact-form';
+import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon-renderer';
 
 @Component({
 selector: 'app-contact',
 standalone: true,
-imports: [ContactForm],
+imports: [ContactForm, IconRenderer],
 templateUrl: './contact.html',
 styleUrl: './contact.css'
 })

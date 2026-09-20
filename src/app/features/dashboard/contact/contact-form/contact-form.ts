@@ -8,11 +8,13 @@ import {
 } from '@angular/core';
 
 import { ContactDto } from '../contact-service';
+import { IconSearch } from '../../../../shared/components/icon/icon-search/icon-search';
+import { IconPicker } from '../../../../shared/components/icon/icon-picker/icon-picker';
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [],
+  imports: [ IconPicker],
   templateUrl: './contact-form.html',
   styleUrl: './contact-form.css'
 })

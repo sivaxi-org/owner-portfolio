@@ -40,14 +40,7 @@
       <label class="mb-2 block text-sm font-medium text-text-primary">
         Icon
       </label>
-
-      <input
-        type="text"
-        [value]="icon()"
-        (input)="icon.set($any($event.target).value)"
-        placeholder="java"
-        class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
-      />
+      <app-icon-picker [icon]="icon()" (iconChange)="icon.set($any($event))"></app-icon-picker>
     </div>
 
     <!-- Proficiency -->

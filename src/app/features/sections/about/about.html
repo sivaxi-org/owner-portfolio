@@ -1,17 +1,148 @@
-  <section id="about" class="px-6 py-14">
-    <div class="max-w-6xl mx-auto">
-      <div class="glass-panel rounded-[22px] p-7 sm:p-9 lg:p-11 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-9 bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass">
+<section id="about" class="px-6 py-14">
+  <div class="max-w-6xl mx-auto">
+
+    @if (aboutData(); as about) {
+
+      <div
+        class="glass-panel rounded-[22px] p-7 sm:p-9 lg:p-11
+               grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-9
+               bg-glass-fill border border-glass-border
+               backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass"
+      >
+
+        <!-- About content -->
         <div>
-          <p class="text-text-muted text-[0.98rem] leading-relaxed">I'm a software engineer who cares about systems that stay fast under pressure and interfaces that stay out of the way. Most of my work sits at the boundary between backend infrastructure and the product experience built on top of it — I like being the person who can trace a slow page load all the way down to the query plan.</p>
-          <p class="text-text-muted text-[0.98rem] leading-relaxed mt-4">I started out building internal tooling at Quill Data, moved into backend and payments infrastructure at Ferro Labs, and now lead reliability and billing systems at Northwind. Somewhere in between I picked up a habit of writing things down, partly for my own sake — most of what's in the blog started as an internal doc.</p>
-          <p class="text-text-muted text-[0.98rem] leading-relaxed mt-4">Outside of client work, I maintain a few open-source tools and I'm slowly working through a personal project to visualize how distributed systems fail, one incident postmortem at a time.</p>
+
+          @if (about.title) {
+            <h2
+              class="text-[clamp(1.5rem,3.6vw,2.2rem)]
+                     font-semibold tracking-[-0.01em] mb-7"
+            >
+              {{ about.title }}
+            </h2>
+          }
+
+          @if (about.contentBlocks?.length) {
+           
+
+      @for (block of about?.contentBlocks; track block.id ?? $index) {
+  <app-content-block-renderer [block]="block" />
+}
+          } @else if (portfolioData()?.bio) {
+            <p
+              class="text-text-muted text-[0.98rem] leading-relaxed"
+            >
+              {{ portfolioData()?.bio }}
+            </p>
+          }
+
         </div>
-        <div class="flex flex-col gap-4 justify-center">
-          <div><div class="font-mono text-[0.76rem] text-text-faint">Based in</div><div class="font-mono text-[0.92rem] mt-1">Bengaluru, India</div></div>
-          <div><div class="font-mono text-[0.76rem] text-text-faint">Focus</div><div class="font-mono text-[0.92rem] mt-1">Backend · Infra · DX tooling</div></div>
-          <div><div class="font-mono text-[0.76rem] text-text-faint">Experience</div><div class="font-mono text-[0.92rem] mt-1">6 years, 3 companies</div></div>
-          <div><div class="font-mono text-[0.76rem] text-text-faint">Availability</div><div class="font-mono text-[0.92rem] mt-1">Select freelance work</div></div>
+
+
+        <!-- Portfolio details -->
+        <div class="flex flex-col gap-5 justify-center">
+
+          @if (portfolioData()?.displayName) {
+            <div>
+              <div
+                class="font-mono text-[0.76rem] text-text-faint"
+              >
+                Name
+              </div>
+
+              <div
+                class="font-mono text-[0.92rem] mt-1 text-text-primary"
+              >
+                {{ portfolioData()?.displayName }}
+              </div>
+            </div>
+          }
+
+
+          @if (portfolioData()?.headline) {
+            <div>
+              <div
+                class="font-mono text-[0.76rem] text-text-faint"
+              >
+                Role
+              </div>
+
+              <div
+                class="font-mono text-[0.92rem] mt-1 text-text-primary"
+              >
+                {{ portfolioData()?.headline }}
+              </div>
+            </div>
+          }
+
+
+          @if (portfolioData()?.siteTitle) {
+            <div>
+              <div
+                class="font-mono text-[0.76rem] text-text-faint"
+              >
+                Website
+              </div>
+
+              <div
+                class="font-mono text-[0.92rem] mt-1 text-text-primary"
+              >
+                {{ portfolioData()?.siteTitle }}
+              </div>
+            </div>
+          }
+
+
+          @if (portfolioData()?.resumeUrl) {
+            <div>
+              <div
+                class="font-mono text-[0.76rem] text-text-faint"
+              >
+                Resume
+              </div>
+
+              <a
+                [href]="portfolioData()?.resumeUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5
+                       font-mono text-[0.92rem] mt-1
+                       text-text-primary underline underline-offset-4
+                       decoration-glass-border
+                       hover:opacity-70 transition-opacity"
+              >
+                View resume
+
+                <svg
+                  class="w-3.5 h-3.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M14 3h7v7" />
+                  <path d="M10 14 21 3" />
+                  <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" />
+                </svg>
+              </a>
+            </div>
+          }
+
         </div>
+
       </div>
-    </div>
-  </section>
+
+    } @else {
+
+      <div
+        class="py-10 text-center text-text-faint text-sm"
+      >
+        About information is not available.
+      </div>
+
+    }
+
+  </div>
+</section>
