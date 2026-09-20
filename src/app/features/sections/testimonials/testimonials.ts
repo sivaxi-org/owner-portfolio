@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
 
-import { PortfolioHomeResponse } from '../../home/home.service';
 
 @Component({
   selector: 'app-testimonials',

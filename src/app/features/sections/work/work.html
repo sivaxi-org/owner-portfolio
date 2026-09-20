@@ -1,20 +1,13 @@
 <section id="work" class="px-6 py-14">
-
   <div class="max-w-6xl mx-auto">
-
     <!-- Section heading -->
     <div class="mb-9 flex items-baseline justify-between gap-5 flex-wrap">
-
       <div>
-        <h2
-          class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]"
-        >
+        <h2 class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]">
           Selected work
         </h2>
 
-        <p
-          class="text-text-muted max-w-[44ch] text-[0.95rem] mt-1"
-        >
+        <p class="text-text-muted max-w-[44ch] text-[0.95rem] mt-1">
           Projects spanning backend infrastructure, developer tooling, and production interfaces.
         </p>
       </div>
@@ -25,26 +18,20 @@
           {{ projectsData()!.projects.length === 1 ? 'project' : 'projects' }}
         </span>
       }
-
     </div>
-
 
     <!-- Projects -->
     @if (projectsData()?.projects?.length) {
-
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-
         @for (project of projectsData()!.projects; track project.id; let i = $index) {
-
           <div
-            class="glass-panel lg:col-span-{{ i % 3 === 0 ? '4' : '2' }} rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1"
+            class="glass-panel lg:col-span-{{
+              i % 3 === 0 ? '4' : '2'
+            }} rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1"
           >
-
             <div>
-
               <!-- Project header -->
               <div class="flex items-center gap-2.5">
-
                 <span
                   class="w-[34px] h-[34px] rounded-[9px] bg-glass-fill-strong border border-glass-border-soft flex items-center justify-center text-text-primary flex-shrink-0"
                 >
@@ -61,42 +48,27 @@
                   }
                 </span>
 
-                <span
-                  class="font-mono text-[0.74rem] text-text-faint"
-                >
-                  Project
-                </span>
-
+                <span class="font-mono text-[0.74rem] text-text-faint"> Project </span>
               </div>
 
-
               <!-- Title -->
-              <h3
-                class="text-[1.24rem] font-semibold mt-2.5 tracking-[-0.01em]"
-              >
+              <h3 class="text-[1.24rem] font-semibold mt-2.5 tracking-[-0.01em]">
                 {{ project.title }}
               </h3>
 
-
               <!-- Summary -->
               @if (project.summary) {
-                <p
-                  class="text-text-muted text-[0.9rem] mt-2.5"
-                >
+                <p class="text-text-muted text-[0.9rem] mt-2.5 line-clamp-3">
                   {{ project.summary }}
                 </p>
               }
-
             </div>
 
-
             <div>
-
               <!-- Tags -->
               @if (project.tags?.length) {
                 <div class="flex flex-wrap gap-2 mt-4">
-
-                  @for (tag of project.tags; track tag.id) {
+                  @for (tag of project.tags.slice(0, 6); track tag.id) {
                     <span
                       class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted"
                     >
@@ -104,14 +76,19 @@
                     </span>
                   }
 
+                  @if (project.tags.length > 6) {
+                    <span
+                      class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted"
+                    >
+                      +{{ project.tags.length - 6}}
+                    </span>
+                  }
                 </div>
               }
-
 
               <!-- Project link -->
               @if (project.liveUrl || project.sourceUrl) {
                 <div class="flex items-center gap-4 mt-4">
-
                   @if (project.liveUrl) {
                     <a
                       [href]="project.liveUrl"
@@ -130,8 +107,8 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                       >
-                        <path d="M7 17 17 7"/>
-                        <path d="M7 7h10v10"/>
+                        <path d="M7 17 17 7" />
+                        <path d="M7 7h10v10" />
                       </svg>
                     </a>
                   }
@@ -146,28 +123,18 @@
                       Source
                     </a>
                   }
-
                 </div>
               }
-
             </div>
-
           </div>
-
         }
-
       </div>
-
     } @else {
-
       <div
         class="rounded-[18px] border border-glass-border bg-glass-fill p-8 text-center text-text-muted"
       >
         No projects available.
       </div>
-
     }
-
   </div>
-
 </section>

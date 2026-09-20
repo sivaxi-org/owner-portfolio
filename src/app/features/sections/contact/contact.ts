@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
 
-import { PortfolioHomeResponse } from '../../home/home.service';
 import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon-renderer';
 
 @Component({

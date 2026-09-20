@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { Navbar } from '../../shared/components/navbar/navbar';
 
 @Component({
-  imports: [],
+  imports: [Navbar],
   selector: 'app-plans',
   styleUrl: './plans.css',
   templateUrl: './plans.html',

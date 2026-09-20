@@ -5,197 +5,227 @@
     class="glass-panel mx-auto max-w-6xl rounded-2xl border border-glass-border-soft bg-glass-fill backdrop-blur-sm backdrop-saturate-[1.4]"
   >
 
-    <!-- Main Navbar -->
-    <div
-      class="flex min-h-[64px] items-center justify-between px-4 sm:px-6"
+
+<!-- Main Navbar -->
+<div
+  class="flex min-h-[64px] items-center justify-between px-4 sm:px-6"
+>
+
+  <!-- Brand -->
+  <a
+    href="/"
+    class="flex items-center gap-2.5 shrink-0"
+    aria-label="Home"
+    (click)="closeMenu()"
+  >
+    <img
+      [src]="
+        themeService.theme() === 'light'
+          ? IMAGE_PATHS.LOGO.SYMBOL_DARK
+          : IMAGE_PATHS.LOGO.SYMBOL_LIGHT
+      "
+      alt="Logo"
+      class="h-8 w-auto object-contain"
+    />
+  </a>
+
+
+  <!-- Desktop Navigation -->
+  <nav
+    class="hidden md:flex items-center gap-2"
+    aria-label="Primary navigation"
+  >
+
+    <a
+      href="#work"
+      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
     >
+      Work
+    </a>
 
-      <!-- Brand -->
-      <a
-        href="/"
-        class="flex items-center gap-2.5 shrink-0"
-        aria-label="Home"
-        (click)="closeMenu()"
-      >
-        <img
-          [src]="
-            themeService.theme() === 'light'
-              ? IMAGE_PATHS.LOGO.SYMBOL_DARK
-              : IMAGE_PATHS.LOGO.SYMBOL_LIGHT
-          "
-          alt="Logo"
-          class="h-8 w-auto object-contain"
-        />
-      </a>
+    <a
+      href="#experience"
+      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
+    >
+      Experience
+    </a>
 
-    
-      <!-- Desktop Navigation -->
-      <nav
-        class="hidden md:flex items-center gap-2"
-        aria-label="Primary navigation"
-      >
-        <a
-          href="#work"
-          class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-        >
-          Work
-        </a>
+    <a
+      href="#blog"
+      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
+    >
+      Blog
+    </a>
 
-        <a
-          href="#experience"
-          class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-        >
-          Experience
-        </a>
+    <a
+      href="#about"
+      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
+    >
+      About
+    </a>
 
-        <a
-          href="#blog"
-          class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-        >
-          Blog
-        </a>
+    <a
+      href="#contact"
+      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
+    >
+      Contact
+    </a>
 
-        <a
-          href="#about"
-          class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-        >
-          About
-        </a>
-
-        <a
-          href="#contact"
-          class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-        >
-          Contact
-        </a>
-      </nav>
+  </nav>
 
 
-      <!-- Actions -->
-      <div class="flex items-center gap-2.5">
+  <!-- Actions -->
+  <div class="flex items-center gap-2.5">
 
-        <!-- Theme -->
-        <app-theme-switcher />
-
-
-        <!-- Desktop Get Started -->
-        <a
-          href="#contact"
-          class="hidden sm:inline-flex items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill-strong"
-        >
-          Get Started
-        </a>
+    <!-- Theme -->
+    <app-theme-switcher />
 
 
-        <!-- Mobile Menu -->
-        <button
-          type="button"
-          class="md:hidden inline-flex items-center gap-2 rounded-[9px] border border-glass-border bg-glass-fill-strong px-3.5 py-2.5 text-[0.82rem] font-medium text-text-primary transition-colors hover:bg-glass-fill"
-          [attr.aria-expanded]="menuOpen"
-          aria-controls="mobile-menu"
-          aria-label="Toggle navigation menu"
-          (click)="toggleMenu()"
-        >
+    <!-- Login -->
+    <a
+      href="/dashboard"
+      class="hidden sm:inline-flex items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill"
+    >
+      Login
+    </a>
 
-          @if (menuOpen) {
-            <svg
-              class="h-4 w-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            >
-              <path d="M6 6l12 12" />
-              <path d="M18 6L6 18" />
-            </svg>
-          } @else {
-            <svg
-              class="h-4 w-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            >
-              <path d="M4 7h16" />
-              <path d="M4 12h16" />
-              <path d="M4 17h16" />
-            </svg>
-          }
 
-        </button>
-
-      </div>
-    </div>
+    <!-- Desktop Get Started -->
+    <a
+      href="/plans"
+      class="hidden sm:inline-flex items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill"
+    >
+      Get Started
+    </a>
 
 
     <!-- Mobile Menu -->
-    @if (menuOpen) {
-      <div
-        id="mobile-menu"
-        class="border-t border-glass-border-soft px-4 pb-4 pt-2 md:hidden"
+    <button
+      type="button"
+      class="md:hidden inline-flex items-center gap-2 rounded-[9px] border border-glass-border bg-glass-fill-strong px-3.5 py-2.5 text-[0.82rem] font-medium text-text-primary transition-colors hover:bg-glass-fill"
+      [attr.aria-expanded]="menuOpen"
+      aria-controls="mobile-menu"
+      aria-label="Toggle navigation menu"
+      (click)="toggleMenu()"
+    >
+
+      @if (menuOpen) {
+
+        <!-- Close -->
+        <svg
+          class="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M6 6l12 12" />
+          <path d="M18 6L6 18" />
+        </svg>
+
+      } @else {
+
+        <!-- Menu -->
+        <svg
+          class="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M4 7h16" />
+          <path d="M4 12h16" />
+          <path d="M4 17h16" />
+        </svg>
+
+      }
+
+    </button>
+
+  </div>
+</div>
+
+
+<!-- Mobile Menu -->
+@if (menuOpen) {
+
+  <div
+    id="mobile-menu"
+    class="border-t border-glass-border-soft px-4 pb-4 pt-2 md:hidden"
+  >
+
+    <nav
+      class="flex flex-col"
+      aria-label="Mobile navigation"
+    >
+
+      <a
+        href="#work"
+        class="mobile-nav-link"
+        (click)="closeMenu()"
       >
+        Work
+      </a>
 
-        <nav
-          class="flex flex-col"
-          aria-label="Mobile navigation"
-        >
+      <a
+        href="#experience"
+        class="mobile-nav-link"
+        (click)="closeMenu()"
+      >
+        Experience
+      </a>
 
-          <a
-            href="#work"
-            class="mobile-nav-link"
-            (click)="closeMenu()"
-          >
-            Work
-          </a>
+      <a
+        href="#blog"
+        class="mobile-nav-link"
+        (click)="closeMenu()"
+      >
+        Blog
+      </a>
 
-          <a
-            href="#experience"
-            class="mobile-nav-link"
-            (click)="closeMenu()"
-          >
-            Experience
-          </a>
+      <a
+        href="#about"
+        class="mobile-nav-link"
+        (click)="closeMenu()"
+      >
+        About
+      </a>
 
-          <a
-            href="#blog"
-            class="mobile-nav-link"
-            (click)="closeMenu()"
-          >
-            Blog
-          </a>
-
-          <a
-            href="#about"
-            class="mobile-nav-link"
-            (click)="closeMenu()"
-          >
-            About
-          </a>
-
-          <a
-            href="#contact"
-            class="mobile-nav-link"
-            (click)="closeMenu()"
-          >
-            Contact
-          </a>
-
-        </nav>
+      <a
+        href="#contact"
+        class="mobile-nav-link"
+        (click)="closeMenu()"
+      >
+        Contact
+      </a>
 
 
-        <!-- Mobile Get Started -->
-        <a
-          href="#contact"
-          class="mt-2 flex w-full items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-colors hover:bg-glass-fill"
-          (click)="closeMenu()"
-        >
-          Get Started
-        </a>
+      <!-- Mobile Login -->
+      <a
+        href="/dashboard"
+        class="mobile-nav-link"
+        (click)="closeMenu()"
+      >
+        Login
+      </a>
 
-      </div>
-    }
+    </nav>
+
+
+    <!-- Mobile Get Started -->
+    <a
+      href="/plans"
+      class="mt-2 flex w-full items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-colors hover:bg-glass-fill"
+      (click)="closeMenu()"
+    >
+      Get Started
+    </a>
+
+  </div>
+}
+
 
   </div>
 </header>

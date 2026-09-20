@@ -1,8 +1,14 @@
 import { Routes } from '@angular/router';
 
-import { Home } from './features/home/home';
 import { authGuard } from './core/guards/auth.guard';
 import { ContentBlockTest } from './features/dashboard/content-block-test/content-block-test';
+import { PortfolioPage } from './features/portfolio-page/portfolio-home';
+import { Home } from './features/home/home';
+import { Plans } from './features/plans/plans';
+import { keycloak } from './core/auth/keycloak';
+
+
+
 
 export const routes: Routes = [
   {
@@ -14,6 +20,18 @@ export const routes: Routes = [
       section: 'public',
     },
   },
+
+  {
+    path: "plans",
+    component: Plans
+  },
+
+  {
+    path : "portfolio/:username",
+    component: PortfolioPage
+  },
+
+
 
   {
     path: 'dashboard',
@@ -34,7 +52,7 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'overview',
+        redirectTo: 'portfolio/' + keycloak.tokenParsed?.['preferred_username'],
       },
 
       {

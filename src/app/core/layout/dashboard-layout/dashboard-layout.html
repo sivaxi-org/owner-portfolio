@@ -134,8 +134,7 @@
 
 
         <!-- Overview -->
-        <a
-          routerLink="/dashboard"
+        <a [routerLink]="['/portfolio', authService.username]"
           routerLinkActive="bg-glass-fill-strong text-text-primary"
           [routerLinkActiveOptions]="{ exact: true }"
           (click)="closeMobileMenu()"

@@ -1,7 +1,6 @@
+import { SlicePipe } from '@angular/common';
 import { Component, input } from '@angular/core';
 
-import { PortfolioHomeResponse } from '../../home/home.service';
-import { ContentBlockRenderer } from '../../../shared/components/content-block-renderer/content-block-renderer';
 
 @Component({
   selector: 'app-work',

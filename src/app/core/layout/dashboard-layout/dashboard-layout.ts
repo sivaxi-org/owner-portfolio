@@ -22,7 +22,7 @@ export class DashboardLayout {
   readonly images = IMAGE_PATHS;
 
 
-   readonly authService = inject(AuthService);
+    authService = inject(AuthService);
 
   readonly themeService = inject(ThemeService)
 
