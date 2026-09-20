@@ -26,7 +26,7 @@ export class IconRenderer {
 
   // Tailwind utility classes, e.g. "h-6 w-6", "text-blue-500 dark:text-blue-400"
   sizeClass = input('h-6 w-6');
-  colorClass = input('text-text-muted');
+  colorClass = input('text-text-primary');
 
   private sanitizer = inject(DomSanitizer);
 

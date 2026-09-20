@@ -25,10 +25,14 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
         @for (project of projectsData()!.projects; track project.id; let i = $index) {
           <div
-            class="glass-panel lg:col-span-{{
-              i % 3 === 0 ? '4' : '2'
-            }} rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1"
-          >
+  role="link"
+  tabindex="0"
+  (click)="openProject(project.slug)"
+  (keydown.enter)="openProject(project.slug)"
+  class="glass-panel lg:col-span-{{
+    i % 3 === 0 ? '4' : '2'
+  }} rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1 cursor-pointer"
+>
             <div>
               <!-- Project header -->
               <div class="flex items-center gap-2.5">

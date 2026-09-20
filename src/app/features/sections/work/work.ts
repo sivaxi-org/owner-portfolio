@@ -1,5 +1,6 @@
 import { SlicePipe } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,4 +12,11 @@ import { Component, input } from '@angular/core';
 export class Work {
   readonly projectsData =
     input< any | undefined>();
+
+private readonly router = inject(Router);
+
+openProject(slug: string): void {
+  this.router.navigate(['/projects', slug]);
+}
+    
 }

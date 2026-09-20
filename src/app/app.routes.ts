@@ -31,6 +31,13 @@ export const routes: Routes = [
     component: PortfolioPage
   },
 
+    {
+    path: 'projects/:slug',
+    loadComponent: () =>
+      import('./features/project-detail/project-detail')
+        .then(m => m.ProjectDetail),
+  },
+
 
 
   {
