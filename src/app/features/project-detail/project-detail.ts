@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectDetailService,ProjectSlugResponse } from './project-detail-service';
 import { ContentBlockRenderer } from '../../shared/components/content-block-renderer/content-block-renderer';
@@ -17,7 +17,7 @@ export class ProjectDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly projectService = inject(ProjectDetailService);
 
-  project?: ProjectSlugResponse;
+  project =  signal<ProjectSlugResponse | null>(null);
 
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('slug');
@@ -28,7 +28,7 @@ export class ProjectDetail implements OnInit {
 
     this.projectService.getProjectDetails(slug).subscribe({
       next: (response) => {
-        this.project = response;
+        this.project.set(response);
       },
       error: (error) => {
         console.error('Failed to load project details:', error);

@@ -1,7 +1,7 @@
 
 <app-navbar></app-navbar>
 
-@if (project; as project) {
+@if (project(); as project) {
   <main class="max-w-5xl mt-10 mx-auto px-6 py-16">
 
     <div class="mb-8">
@@ -55,10 +55,4 @@
     <!-- Project blocks/items UI will go here later -->
 
   </main>
-} @else {
-  <div class="max-w-5xl mx-auto px-6 py-16">
-    <p class="text-text-secondary">
-      Loading project...
-    </p>
-  </div>
 }
