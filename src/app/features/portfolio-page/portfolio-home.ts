@@ -20,7 +20,7 @@ import { Footer } from "../../shared/components/footer/footer";
   standalone: true,
   imports: [
     ScrollScrubVideoDirective,
-    Navbar,
+
     Hero,
     Skills,
     Work,

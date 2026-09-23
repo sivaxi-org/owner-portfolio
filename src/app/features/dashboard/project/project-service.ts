@@ -45,7 +45,7 @@ export class ProjectService {
   getProjects(): Observable<ProjectDto[]> {
 
     return this.http.get<ProjectDto[]>(
-      this.apiUrl
+      environment.apiUrl+ "/api/public/projects/ajaymalah"
     );
 
   }

@@ -1,4 +1,4 @@
-<div class="bg-bg-base text-text-primary font-display leading-relaxed overflow-x-hidden antialiased">
+<div class="relative bg-bg-base text-text-primary font-display leading-relaxed overflow-x-hidden antialiased">
 
   <video
     #backgroundVideo
@@ -11,33 +11,29 @@
     loop
     playsinline
     preload="auto"
-    class="fixed inset-0 h-full w-full object-cover"
+    class="fixed inset-0  h-full w-full object-cover"
   ></video>
 
-  <div id="backdrop" class="fixed inset-0 -z-10 overflow-hidden bg-bg-base">
-    ...
+  <div class="relative">
+
+    <app-hero
+      [portfolioData]="portfolio()?.portfolioData"
+      [contacts]="portfolio()?.contactsData?.contacts ?? []"
+      [stats]="portfolio()?.statsData?.stats ?? []"
+    />
+
+    <app-skills [skillsData]="portfolio()?.skillsData.categories"></app-skills>
+    <app-work [projectsData]="portfolio()?.projectsData"></app-work>
+    <app-experience [experienceData]="portfolio()?.experienceData" />
+    <app-blog></app-blog>
+    <app-testimonials [testimonialsData]="portfolio()?.testimonialsData"></app-testimonials>
+    <app-about
+      [portfolioData]="portfolio()?.portfolioData"
+      [aboutData]="portfolio()?.aboutData"
+    />
+    <app-contact [contactsData]="portfolio()?.contactsData"></app-contact>
+    <app-footer></app-footer>
+
   </div>
-
-  <app-navbar></app-navbar>
-
-  <app-hero
-  [portfolioData]="portfolio()?.portfolioData"
-  [contacts]="portfolio()?.contactsData?.contacts ?? []"
-  [stats]="portfolio()?.statsData?.stats ?? []"
-  />
-
-  <app-skills [skillsData]="portfolio()?.skillsData.categories"></app-skills>  
-  <app-work [projectsData]="portfolio()?.projectsData" ></app-work>
-  <app-experience
-  [experienceData]="portfolio()?.experienceData"
-/>
-  <app-blog></app-blog>
-  <app-testimonials [testimonialsData]="portfolio()?.testimonialsData"></app-testimonials>
-<app-about
-  [portfolioData]="portfolio()?.portfolioData"
-  [aboutData]="portfolio()?.aboutData"
-/>
-  <app-contact [contactsData]="portfolio()?.contactsData"></app-contact>
-  <app-footer></app-footer>
 
 </div>

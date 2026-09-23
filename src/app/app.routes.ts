@@ -6,35 +6,41 @@ import { PortfolioPage } from './features/portfolio-page/portfolio-home';
 import { Home } from './features/home/home';
 import { Plans } from './features/plans/plans';
 import { keycloak } from './core/auth/keycloak';
-
-
-
+import { HomeLayout } from './core/layout/home-layout/home-layout';
 
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'portfolio/ajaymalah',
+    component: HomeLayout,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'portfolio/ajaymalah',
+      },
+
+      {
+        path: 'projects',
+        loadComponent: () => import('./features/projects/projects').then((m) => m.Projects),
+      },
+
+      {
+        path: 'portfolio/:username',
+        component: PortfolioPage,
+      },
+    ],
   },
 
   {
-    path: "plans",
-    component: Plans
+    path: 'plans',
+    component: Plans,
   },
 
   {
-    path : "portfolio/:username",
-    component: PortfolioPage
-  },
-
-    {
-    path: '/projects/:slug',
+    path: 'projects/:slug',
     loadComponent: () =>
-      import('./features/project-detail/project-detail')
-        .then(m => m.ProjectDetail),
+      import('./features/project-detail/project-detail').then((m) => m.ProjectDetail),
   },
-
-
 
   {
     path: 'dashboard',
@@ -47,9 +53,7 @@ export const routes: Routes = [
     },
 
     loadComponent: () =>
-      import('./core/layout/dashboard-layout/dashboard-layout').then(
-        (m) => m.DashboardLayout,
-      ),
+      import('./core/layout/dashboard-layout/dashboard-layout').then((m) => m.DashboardLayout),
 
     children: [
       {
@@ -66,9 +70,7 @@ export const routes: Routes = [
           section: 'dashboard',
         },
         loadComponent: () =>
-          import('./features/dashboard/overview/overview').then(
-            (m) => m.Overview,
-          ),
+          import('./features/dashboard/overview/overview').then((m) => m.Overview),
       },
 
       {
@@ -79,9 +81,7 @@ export const routes: Routes = [
           section: 'portfolio',
         },
         loadComponent: () =>
-          import('./features/dashboard/portfolio/portfolio').then(
-            (m) => m.Portfolio,
-          ),
+          import('./features/dashboard/portfolio/portfolio').then((m) => m.Portfolio),
       },
 
       {
@@ -91,10 +91,7 @@ export const routes: Routes = [
           page: 'about',
           section: 'portfolio',
         },
-        loadComponent: () =>
-          import('./features/dashboard/about/about').then(
-            (m) => m.About,
-          ),
+        loadComponent: () => import('./features/dashboard/about/about').then((m) => m.About),
       },
 
       {
@@ -105,9 +102,7 @@ export const routes: Routes = [
           section: 'portfolio',
         },
         loadComponent: () =>
-          import('./features/dashboard/project/projects').then(
-            (m) => m.Projects,
-          ),
+          import('./features/dashboard/project/projects').then((m) => m.Projects),
       },
 
       {
@@ -118,9 +113,9 @@ export const routes: Routes = [
           section: 'portfolio',
         },
         loadComponent: () =>
-          import(
-            './features/dashboard/project/components/project-detail/project-detail'
-          ).then((m) => m.ProjectDetail),
+          import('./features/dashboard/project/components/project-detail/project-detail').then(
+            (m) => m.ProjectDetail,
+          ),
       },
 
       {
@@ -131,9 +126,7 @@ export const routes: Routes = [
           section: 'portfolio',
         },
         loadComponent: () =>
-          import('./features/dashboard/experience/experience').then(
-            (m) => m.Experience,
-          ),
+          import('./features/dashboard/experience/experience').then((m) => m.Experience),
       },
 
       {
@@ -144,9 +137,9 @@ export const routes: Routes = [
           section: 'portfolio',
         },
         loadComponent: () =>
-          import(
-            './features/dashboard/experience/experience-detail/experience-detail'
-          ).then((m) => m.ExperienceDetail),
+          import('./features/dashboard/experience/experience-detail/experience-detail').then(
+            (m) => m.ExperienceDetail,
+          ),
       },
 
       {
@@ -156,10 +149,7 @@ export const routes: Routes = [
           page: 'skills',
           section: 'portfolio',
         },
-        loadComponent: () =>
-          import('./features/dashboard/skills/skills').then(
-            (m) => m.Skills,
-          ),
+        loadComponent: () => import('./features/dashboard/skills/skills').then((m) => m.Skills),
       },
 
       {
@@ -169,10 +159,7 @@ export const routes: Routes = [
           page: 'stats',
           section: 'portfolio',
         },
-        loadComponent: () =>
-          import('./features/dashboard/stats/stats').then(
-            (m) => m.Stats,
-          ),
+        loadComponent: () => import('./features/dashboard/stats/stats').then((m) => m.Stats),
       },
 
       {
@@ -183,9 +170,7 @@ export const routes: Routes = [
           section: 'portfolio',
         },
         loadComponent: () =>
-          import('./features/dashboard/testimonial/testimonial').then(
-            (m) => m.Testimonials,
-          ),
+          import('./features/dashboard/testimonial/testimonial').then((m) => m.Testimonials),
       },
 
       {
@@ -195,10 +180,7 @@ export const routes: Routes = [
           page: 'contacts',
           section: 'portfolio',
         },
-        loadComponent: () =>
-          import('./features/dashboard/contact/contact').then(
-            (m) => m.Contact,
-          ),
+        loadComponent: () => import('./features/dashboard/contact/contact').then((m) => m.Contact),
       },
 
       {

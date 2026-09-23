@@ -1,231 +1,107 @@
-<header
-  class="fixed top-0 left-0 right-0 z-[100] px-4 sm:px-6 lg:px-8 pt-3"
->
+<header class="fixed left-0 right-0 top-0 z-50 isolate mt-6 w-full px-4 pt-3 sm:px-6 lg:px-8">
   <div
-    class="glass-panel mx-auto max-w-6xl rounded-2xl border border-glass-border-soft bg-glass-fill backdrop-blur-sm backdrop-saturate-[1.4]"
+    class="glass-panel mx-auto max-w-6xl rounded-2xl border border-glass-border-soft bg-glass-fill py-2 backdrop-blur-sm backdrop-saturate-[1.4] md:py-3"
   >
+    <div class="flex items-center justify-between px-4 sm:px-6">
+      <a
+        routerLink="/"
+        class="flex shrink-0 items-center gap-2.5"
+        aria-label="Home"
+        (click)="closeMenu()"
+      >
+        <img
+          [src]="
+            themeService.theme() === 'light'
+              ? IMAGE_PATHS.LOGO.SYMBOL_DARK
+              : IMAGE_PATHS.LOGO.SYMBOL_LIGHT
+          "
+          alt="Logo"
+          class="h-8 w-auto object-contain"
+        />
+      </a>
 
+      <nav class="hidden items-center gap-2 md:flex" aria-label="Primary navigation">
+        @for (link of navLinks; track link.fragment) {
+          <a
+            [href]="'#' + link.fragment"
+            class="rounded-lg px-3.5 py-2 text-[0.88rem] text-text-muted transition-colors hover:bg-glass-fill-strong hover:text-text-primary"
+            (click)="goToSection(link.fragment, $event)"
+          >
+            {{ link.label }}
+          </a>
+        }
+      </nav>
 
-<!-- Main Navbar -->
-<div
-  class="flex min-h-[64px] items-center justify-between px-4 sm:px-6"
+      <div class="flex items-center gap-2.5">
+        <app-theme-switcher />
+
+        <a
+          routerLink="/dashboard"
+          class="hidden items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill sm:inline-flex"
+        >
+          {{ authService.authenticated ? 'Dashboard' : 'Login' }}
+        </a>
+
+        <a
+          routerLink="/plans"
+          class="hidden items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill sm:inline-flex"
+        >
+          Get Started
+        </a>
+
+        <button
+  type="button"
+  class="group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-glass-border-soft bg-glass-fill text-text-muted shadow-[var(--shadow-glass)] backdrop-blur-[14px] transition-[color,background-color,border-color,transform] duration-200 ease-out hover:border-glass-border hover:bg-glass-fill-strong hover:text-text-primary active:scale-[0.94] focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-[3px] md:hidden"
+  [attr.aria-expanded]="menuOpen()"
+  aria-controls="mobile-menu"
+  aria-label="Toggle navigation menu"
+  (click)="toggleMenu(); $event.stopPropagation()"
 >
+  @if (!menuOpen()) {
+    <iconify-icon
+  icon="lucide:menu"
+  class="text-text-secondary"
+  width="24"
+  height="24"
+/>
+  } @else {
+    <iconify-icon
+  icon="lucide:x"
+  class="text-text-secondary"
+  width="24"
+  height="24"
+/>
+  }
+</button>
+      </div>
+    </div>
 
-  <!-- Brand -->
-  <a
-    href="/"
-    class="flex items-center gap-2.5 shrink-0"
-    aria-label="Home"
-    (click)="closeMenu()"
-  >
-    <img
-      [src]="
-        themeService.theme() === 'light'
-          ? IMAGE_PATHS.LOGO.SYMBOL_DARK
-          : IMAGE_PATHS.LOGO.SYMBOL_LIGHT
-      "
-      alt="Logo"
-      class="h-8 w-auto object-contain"
-    />
-  </a>
+    @if (menuOpen()) {
+      <div id="mobile-menu" class="border-t border-glass-border-soft px-4 pb-4 pt-2 md:hidden">
+        <nav class="flex flex-col" aria-label="Mobile navigation">
+          @for (link of navLinks; track link.fragment) {
+            <a
+              [href]="'#' + link.fragment"
+              class="mobile-nav-link"
+              (click)="goToSection(link.fragment, $event)"
+            >
+              {{ link.label }}
+            </a>
+          }
 
+          <a routerLink="/dashboard" class="mobile-nav-link" (click)="closeMenu()">
+            {{ authService.authenticated ? 'Dashboard' : 'Login' }}
+          </a>
+        </nav>
 
-  <!-- Desktop Navigation -->
-  <nav
-    class="hidden md:flex items-center gap-2"
-    aria-label="Primary navigation"
-  >
-
-    <a
-      href="#work"
-      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-    >
-      Work
-    </a>
-
-    <a
-      href="#experience"
-      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-    >
-      Experience
-    </a>
-
-    <a
-      href="#blog"
-      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-    >
-      Blog
-    </a>
-
-    <a
-      href="#about"
-      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-    >
-      About
-    </a>
-
-    <a
-      href="#contact"
-      class="text-[0.88rem] text-text-muted px-3.5 py-2 rounded-lg transition-colors hover:text-text-primary hover:bg-glass-fill-strong"
-    >
-      Contact
-    </a>
-
-  </nav>
-
-
-  <!-- Actions -->
-  <div class="flex items-center gap-2.5">
-
-    <!-- Theme -->
-    <app-theme-switcher />
-
-
-    <!-- Login -->
-    <a
-      href="/dashboard"
-      class="hidden sm:inline-flex items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill"
-    >
-      Login
-    </a>
-
-
-    <!-- Desktop Get Started -->
-    <a
-      href="/plans"
-      class="hidden sm:inline-flex items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill"
-    >
-      Get Started
-    </a>
-
-
-    <!-- Mobile Menu -->
-    <button
-      type="button"
-      class="md:hidden inline-flex items-center gap-2 rounded-[9px] border border-glass-border bg-glass-fill-strong px-3.5 py-2.5 text-[0.82rem] font-medium text-text-primary transition-colors hover:bg-glass-fill"
-      [attr.aria-expanded]="menuOpen"
-      aria-controls="mobile-menu"
-      aria-label="Toggle navigation menu"
-      (click)="toggleMenu()"
-    >
-
-      @if (menuOpen) {
-
-        <!-- Close -->
-        <svg
-          class="h-4 w-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
+        <a
+          routerLink="/plans"
+          class="mt-2 flex w-full items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-colors hover:bg-glass-fill"
+          (click)="closeMenu()"
         >
-          <path d="M6 6l12 12" />
-          <path d="M18 6L6 18" />
-        </svg>
-
-      } @else {
-
-        <!-- Menu -->
-        <svg
-          class="h-4 w-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-        >
-          <path d="M4 7h16" />
-          <path d="M4 12h16" />
-          <path d="M4 17h16" />
-        </svg>
-
-      }
-
-    </button>
-
-  </div>
-</div>
-
-
-<!-- Mobile Menu -->
-@if (menuOpen) {
-
-  <div
-    id="mobile-menu"
-    class="border-t border-glass-border-soft px-4 pb-4 pt-2 md:hidden"
-  >
-
-    <nav
-      class="flex flex-col"
-      aria-label="Mobile navigation"
-    >
-
-      <a
-        href="#work"
-        class="mobile-nav-link"
-        (click)="closeMenu()"
-      >
-        Work
-      </a>
-
-      <a
-        href="#experience"
-        class="mobile-nav-link"
-        (click)="closeMenu()"
-      >
-        Experience
-      </a>
-
-      <a
-        href="#blog"
-        class="mobile-nav-link"
-        (click)="closeMenu()"
-      >
-        Blog
-      </a>
-
-      <a
-        href="#about"
-        class="mobile-nav-link"
-        (click)="closeMenu()"
-      >
-        About
-      </a>
-
-      <a
-        href="#contact"
-        class="mobile-nav-link"
-        (click)="closeMenu()"
-      >
-        Contact
-      </a>
-
-
-      <!-- Mobile Login -->
-      <a
-        href="/dashboard"
-        class="mobile-nav-link"
-        (click)="closeMenu()"
-      >
-        Login
-      </a>
-
-    </nav>
-
-
-    <!-- Mobile Get Started -->
-    <a
-      href="/plans"
-      class="mt-2 flex w-full items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-colors hover:bg-glass-fill"
-      (click)="closeMenu()"
-    >
-      Get Started
-    </a>
-
-  </div>
-}
-
-
+          Get Started
+        </a>
+      </div>
+    }
   </div>
 </header>
