@@ -10,36 +10,41 @@ import { HomeLayout } from './core/layout/home-layout/home-layout';
 
 export const routes: Routes = [
   {
-    path: '',
-    component: HomeLayout,
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'portfolio/ajaymalah',
-      },
+  path: '',
+  component: HomeLayout,
+  children: [
+    {
+      path: '',
+      pathMatch: 'full',
+      redirectTo: 'portfolio/:username',
+    },
 
-      {
-        path: 'projects',
-        loadComponent: () => import('./features/projects/projects').then((m) => m.Projects),
-      },
+    {
+      path: 'portfolio/:username',
+      component: PortfolioPage,
+    },
 
-      {
-        path: 'portfolio/:username',
-        component: PortfolioPage,
-      },
-    ],
-  },
+    {
+      path: 'portfolio/:username/projects',
+      loadComponent: () =>
+        import('./features/projects/projects').then(
+          (m) => m.Projects
+        ),
+    },
+
+    {
+      path: 'portfolio/:username/projects/:slug',
+      loadComponent: () =>
+        import('./features/project-detail/project-detail').then(
+          (m) => m.ProjectDetail
+        ),
+    },
+  ],
+},
 
   {
     path: 'plans',
     component: Plans,
-  },
-
-  {
-    path: 'projects/:slug',
-    loadComponent: () =>
-      import('./features/project-detail/project-detail').then((m) => m.ProjectDetail),
   },
 
   {
