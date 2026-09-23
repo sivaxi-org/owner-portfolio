@@ -13,12 +13,8 @@ import { keycloak } from './core/auth/keycloak';
 export const routes: Routes = [
   {
     path: '',
-    component: Home,
-    title: 'Sivaxi | Home',
-    data: {
-      page: 'home',
-      section: 'public',
-    },
+    pathMatch: 'full',
+    redirectTo: 'portfolio/ajaymalah',
   },
 
   {
@@ -32,7 +28,7 @@ export const routes: Routes = [
   },
 
     {
-    path: 'projects/:slug',
+    path: '/projects/:slug',
     loadComponent: () =>
       import('./features/project-detail/project-detail')
         .then(m => m.ProjectDetail),
