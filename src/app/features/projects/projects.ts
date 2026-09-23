@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProjectDto, ProjectService } from '../dashboard/project/project-service';
 
 @Component({
@@ -9,17 +10,25 @@ import { ProjectDto, ProjectService } from '../dashboard/project/project-service
 })
 export class Projects {
 
-  projects = signal<ProjectDto[]>([])
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
-  constructor(private readonly projectService:ProjectService){
-    this.loadProjects()
+  projects = signal<ProjectDto[]>([]);
+
+  constructor(private readonly projectService: ProjectService) {
+    this.loadProjects();
   }
 
-  loadProjects(){
+  loadProjects() {
     this.projectService.getProjects().subscribe({
-      next:(res)=> this.projects.set(res),
-      error: (error) => console.log(error)
-    })
+      next: (res) => this.projects.set(res),
+      error: (error) => console.log(error),
+    });
   }
 
+  projectDetails(slug: string): void {
+    // Navigates relative to this component's current route, e.g.
+    // '/projects' -> '/projects/:slug'.
+    this.router.navigate([slug], { relativeTo: this.route });
+  }
 }

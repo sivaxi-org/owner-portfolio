@@ -13,6 +13,7 @@ import { Testimonials } from "../sections/testimonials/testimonials";
 import { About } from "../sections/about/about";
 import { Contact } from "../sections/contact/contact";
 import { Footer } from "../../shared/components/footer/footer";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-portfolio-page',
@@ -20,7 +21,6 @@ import { Footer } from "../../shared/components/footer/footer";
   standalone: true,
   imports: [
     ScrollScrubVideoDirective,
-
     Hero,
     Skills,
     Work,
@@ -35,13 +35,15 @@ import { Footer } from "../../shared/components/footer/footer";
 export class PortfolioPage implements AfterViewInit {
 
   readonly themeService = inject(ThemeService);
-
+  private readonly route = inject(ActivatedRoute);
+  
   private readonly portfolioHomeService = inject(PortfolioHomeService);
 
   readonly portfolio = signal<PortfolioHomeResponse | undefined>(undefined);
 
   @ViewChild('backgroundVideo')
   private readonly video?: ElementRef<HTMLVideoElement>;
+  username = this.route.snapshot.paramMap.get('username');
 
   private previousTime = 0;
 
@@ -68,9 +70,9 @@ export class PortfolioPage implements AfterViewInit {
   }
 
   private loadPortfolio(): void {
-    const username = 'ajaymalah';
+    
 
-    this.portfolioHomeService.getPortfolio(username).subscribe({
+    this.portfolioHomeService.getPortfolio(this.username??"").subscribe({
       next: (portfolio) => {
         this.portfolio.set(portfolio);
       },

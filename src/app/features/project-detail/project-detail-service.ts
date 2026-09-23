@@ -25,7 +25,7 @@ export class ProjectDetailService {
 
     getProjectDetails(slug: string): Observable<ProjectSlugResponse> {
       return this.http.get<ProjectSlugResponse>(
-    `${this.url}/api/projects/slug/${slug}`
+    `${this.url}/api/public/projects/slug/${slug}`
    );
 }
 

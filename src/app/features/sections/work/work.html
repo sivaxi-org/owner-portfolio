@@ -12,12 +12,37 @@
         </p>
       </div>
 
-      @if (projectsData()?.projects?.length) {
-        <span class="font-mono text-[0.8rem] text-text-faint">
-          {{ projectsData()!.projects.length }}
-          {{ projectsData()!.projects.length === 1 ? 'project' : 'projects' }}
-        </span>
-      }
+      <div class="flex items-center gap-4">
+        @if (projectsData()?.projects?.length) {
+          <span class="font-mono text-[0.8rem] text-text-faint">
+            {{ projectsData()!.projects.length }}
+            {{ projectsData()!.projects.length === 1 ? 'project' : 'projects' }}
+          </span>
+        }
+
+        @if (projectsData()?.projects?.length) {
+          <button
+            type="button"
+            (click)="showAll()"
+            class="font-mono inline-flex items-center gap-1.5 text-[0.8rem] text-text-muted transition-colors hover:text-text-primary"
+          >
+            Show all
+
+            <svg
+              class="h-[13px] w-[13px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        }
+      </div>
     </div>
 
     <!-- Projects -->
@@ -25,14 +50,14 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
         @for (project of projectsData()!.projects; track project.id; let i = $index) {
           <div
-  role="link"
-  tabindex="0"
-  (click)="openProject(project.slug)"
-  (keydown.enter)="openProject(project.slug)"
-  class="glass-panel lg:col-span-{{
-    i % 3 === 0 ? '4' : '2'
-  }} rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1 cursor-pointer"
->
+            role="link"
+            tabindex="0"
+            (click)="openProject(project.slug)"
+            (keydown.enter)="openProject(project.slug)"
+            [class.lg:col-span-4]="i % 3 === 0"
+            [class.lg:col-span-2]="i % 3 !== 0"
+            class="glass-panel rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1 cursor-pointer"
+          >
             <div>
               <!-- Project header -->
               <div class="flex items-center gap-2.5">
@@ -84,7 +109,7 @@
                     <span
                       class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted"
                     >
-                      +{{ project.tags.length - 6}}
+                      +{{ project.tags.length - 6 }}
                     </span>
                   }
                 </div>
@@ -94,8 +119,8 @@
               @if (project.liveUrl || project.sourceUrl) {
                 <div class="flex items-center gap-4 mt-4">
                   @if (project.liveUrl) {
-                    <a
-                      [href]="project.liveUrl"
+                    
+                   <a   [href]="project.liveUrl"
                       target="_blank"
                       rel="noopener noreferrer"
                       class="font-mono group inline-flex items-center gap-1.5 text-[0.8rem] text-text-muted transition-colors hover:text-text-primary"

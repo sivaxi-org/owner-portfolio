@@ -23,7 +23,7 @@
     />
 
     <app-skills [skillsData]="portfolio()?.skillsData.categories"></app-skills>
-    <app-work [projectsData]="portfolio()?.projectsData"></app-work>
+    <app-work [username]="username" [projectsData]="portfolio()?.projectsData"></app-work>
     <app-experience [experienceData]="portfolio()?.experienceData" />
     <app-blog></app-blog>
     <app-testimonials [testimonialsData]="portfolio()?.testimonialsData"></app-testimonials>
